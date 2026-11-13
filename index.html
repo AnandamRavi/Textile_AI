@@ -603,9 +603,75 @@ try{
 
 }
 
+
 let grouped=[];
-function updateProgress(){let max=document.documentElement.scrollHeight-innerHeight;let pct=max>0?Math.min(100,scrollY/max*100):0;$('progress').style.width=pct+'%';let anchors=[...document.querySelectorAll('.module')],active=anchors[0];anchors.forEach(a=>{if(a.getBoundingClientRect().top<180)active=a});document.querySelectorAll('.nav a').forEach(a=>a.classList.toggle('active',active&&a.hash==='#'+active.id))}
-async function fetchTab(tab){let r=await fetch(`https://docs.google.com/spreadsheets/d/${CONFIG.SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(tab)}`);if(!r.ok)throw Error(tab);return Papa.parse(await r.text(),{header:true,skipEmptyLines:true}).data}
-async function loadSheet(){if(!CONFIG.SHEET_ID||!window.Papa)return DATA;try{let ov=await fetchTab(CONFIG.OVERVIEW_TAB),modules=ov.filter(x=>x['Module ID']).map(x=>({id:x['Module ID'],tab:x['Module Tab Name'],title:x['Working Module Title'],min:x['Estimated Duration (min)']})),rows={};for(let m of modules){let data=await fetchTab(m.tab);rows[m.id]=data.map(r=>({seq:r['Sequence'],screen:r['Screen ID'],section:r['Section'],contentId:r['Content ID'],role:r['Content Type'],type:r['Interaction Type'],head:r['Heading'],text:r['Learning Content / On-screen Text'],detail:r['Interaction Details / Learner Action'],opt:r['Options / Expected Response'],ok:r['Correct? (Y/N)'],fb:r['Feedback'],next:r['Next Screen ID (optional)'],media:r['Media URL'],asset:r['Visual / Media Asset ID'],objective:r['Learning Objective ID'],status:r['Content Status'],show:r['Show to Learner? (Y/N)']}))}return{title:ov[0]['Course / Resource Title']||DATA.title,modules,rows}}catch(e){console.warn('Google Sheet not available; showing embedded content.',e);return DATA}}
-(async()=>{let d=await loadSheet();grouped=groupScreens(d);render(d)})();
+
+function updateProgress(){
+  let max=document.documentElement.scrollHeight-innerHeight;
+  let pct=max>0?Math.min(100,scrollY/max*100):0;
+  $('progress').style.width=pct+'%';
+  let anchors=[...document.querySelectorAll('.module')],active=anchors[0];
+  anchors.forEach(a=>{
+    if(a.getBoundingClientRect().top<180)active=a
+  });
+  document.querySelectorAll('.nav a').forEach(a=>
+    a.classList.toggle('active',active&&a.hash==='#'+active.id)
+  );
+}
+
+async function loadSheet(){
+
+  if(!CONFIG.APPS_SCRIPT_URL){
+    console.warn('Apps Script URL is missing. Using embedded content.');
+    return DATA;
+  }
+
+  try{
+
+    const response=await fetch(CONFIG.APPS_SCRIPT_URL,{
+      method:'POST',
+      redirect:'follow',
+      headers:{
+        'Content-Type':'text/plain;charset=utf-8'
+      },
+      body:JSON.stringify({
+        action:'getCourseContent'
+      })
+    });
+
+    const result=await response.json();
+
+    if(!result.success){
+      throw new Error(
+        result.message||'Could not retrieve course content.'
+      );
+    }
+
+    if(!result.course||!result.course.modules||!result.course.rows){
+      throw new Error('The course content returned an unexpected format.');
+    }
+
+    console.log('Course content loaded from Google Sheets.');
+
+    return result.course;
+
+  }catch(error){
+
+    console.error(
+      'Google Sheet unavailable; showing embedded content.',
+      error
+    );
+
+    return DATA;
+  }
+}
+
+(async()=>{
+  let d=await loadSheet();
+  grouped=groupScreens(d);
+  render(d);
+})();
+
 </script></body></html>
+
+
