@@ -314,9 +314,10 @@ async function submitLearnerResponse(lesson, textarea, status) {
     return;
   }
 
-  const lessonItems = grouped.find(x => x.id === lesson.id)?.items || [];
-  const activityId =
-    lessonItems.find(item => item.contentId)?.contentId || lesson.id;
+const lessonData = grouped.find(x => x.id === lesson.id);
+
+const activityId =
+  lessonData?.head?.contentId || lesson.id;
 
   const payload = {
     learnerId: learnerProfile.learnerId,
