@@ -316,8 +316,15 @@ async function submitLearnerResponse(lesson, textarea, status) {
 
 const lessonData = grouped.find(x => x.id === lesson.id);
 
+const allLessonItems = [
+  lessonData?.head,
+  ...(lessonData?.items || [])
+];
+
 const activityId =
-  lessonData?.head?.contentId || lesson.id;
+  allLessonItems.find(item =>
+    item?.type === 'reflection' && item?.contentId
+  )?.contentId || lesson.id;
 
   const payload = {
     learnerId: learnerProfile.learnerId,
