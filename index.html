@@ -1542,6 +1542,7 @@ function render(d){
 /* SAVE LEARNER RESPONSE */
 
 
+
 async function submitLearnerResponse(lesson,textarea,status){
 
   if(!learnerRegistered || !learnerProfile.learnerId){
@@ -1565,14 +1566,12 @@ async function submitLearnerResponse(lesson,textarea,status){
   const learnerResponse = textarea.value.trim();
 
   if(!learnerResponse){
-    status.textContent =
-      'Please enter your response before saving.';
+    status.textContent = 'Please enter your response before saving.';
     return;
   }
 
   if(!CONFIG.APPS_SCRIPT_URL){
-    status.textContent =
-      'The Google Sheet connection has not been configured yet.';
+    status.textContent = 'The Google Sheet connection has not been configured yet.';
     return;
   }
 
@@ -1599,9 +1598,7 @@ async function submitLearnerResponse(lesson,textarea,status){
   };
 
   const button = lesson.querySelector('[data-save-response]');
-
-  const feedbackBox =
-    lesson.querySelector('[data-ai-feedback]');
+  const feedbackBox = lesson.querySelector('[data-ai-feedback]');
 
   if(button)button.disabled = true;
 
@@ -1628,9 +1625,7 @@ async function submitLearnerResponse(lesson,textarea,status){
     const data = await result.json();
 
     if(!data.success){
-      throw new Error(
-        data.message || 'The response could not be saved.'
-      );
+      throw new Error(data.message || 'The response could not be saved.');
     }
 
     // STEP 2: Update the local learning record
@@ -1665,13 +1660,8 @@ async function submitLearnerResponse(lesson,textarea,status){
     });
 
     status.textContent =
-      'Your response has been saved as Version ' +
-      data.responseVersion +
-      ' (' +
-      data.responseType +
-      '). Generating your AI feedback…';
+      'Your response has been saved. Generating your AI feedback…';
 
-   
     // STEP 3: Request AI feedback from Groq
 
     if(feedbackBox){
@@ -1703,17 +1693,15 @@ async function submitLearnerResponse(lesson,textarea,status){
           );
         }
 
-        feedbackBox.textContent = '';
-
         const heading = document.createElement('strong');
         heading.textContent = 'Your AI learning feedback';
 
         const message = document.createElement('p');
         message.textContent = feedbackData.feedback;
-
         message.style.marginTop = '10px';
         message.style.lineHeight = '1.6';
 
+        feedbackBox.textContent = '';
         feedbackBox.appendChild(heading);
         feedbackBox.appendChild(message);
 
@@ -1749,7 +1737,6 @@ async function submitLearnerResponse(lesson,textarea,status){
   }
 
 }
-
 /* LEARNER REGISTRATION */
 
 async function registerLearner(){
