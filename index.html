@@ -16,8 +16,14 @@ button,a,textarea{font:inherit}button{cursor:pointer}
 .progress{height:3px;background:#e8ece9}.progress span{display:block;height:100%;width:0;background:var(--gold);transition:width .2s}
 main{max-width:1120px;margin:auto;padding:30px 24px 90px}
 .intro{min-height:370px;border-radius:26px;overflow:hidden;position:relative;display:flex;align-items:flex-end;color:white;background:#1d3c43;margin:10px 0 38px;box-shadow:var(--shadow)}
-.intro:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(11,32,36,.88) 0%,rgba(11,32,36,.63) 52%,rgba(11,32,36,.12) 100%),url("https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&w=1800&q=85") center 48%/cover}
-.introinner{position:relative;max-width:720px;padding:clamp(28px,5vw,58px)}
+.intro:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(90deg,rgba(11,32,36,.88) 0%,rgba(11,32,36,.63) 52%,rgba(11,32,36,.12) 100%),
+    var(--course-banner-image, linear-gradient(135deg,#1d3c43,#286b68)) center 48%/cover;
+}.introinner{position:relative;max-width:720px;padding:clamp(28px,5vw,58px)}
 .eyebrow{text-transform:uppercase;letter-spacing:.14em;font-size:11px;font-weight:800;color:#e9c77f;margin:0 0 12px}
 h1,h2,h3{font-family:Manrope,sans-serif;line-height:1.18;margin-top:0}h1{font-size:clamp(32px,5vw,54px);margin-bottom:14px;max-width:700px;letter-spacing:-.04em}.intro p{font-size:17px;color:#f0f4f2;max-width:620px;margin:0}
 .intrometa{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}.pill{display:inline-flex;align-items:center;border:1px solid rgba(255,255,255,.38);border-radius:30px;padding:5px 11px;font-size:12px;color:#fff}
