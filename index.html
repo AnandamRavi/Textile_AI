@@ -1232,7 +1232,13 @@ function renderLesson(s,n){
         Your note is saved on this device. Select Save my response
         to submit it to the course learning record.
       </div>
-
+<div
+  class="ai-feedback"
+  data-ai-feedback
+  aria-live="polite"
+  style="display:none;margin-top:18px;padding:18px;background:var(--mint);border-radius:12px"
+>
+</div>
     `;
   }else if(h.type === 'video'){
 
