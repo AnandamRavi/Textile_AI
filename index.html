@@ -1,36 +1,366 @@
+
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Practical AI for Textile-sector SMEs</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+
 <style>
-:root{--ink:#202b35;--muted:#53616c;--paper:#f5f6f4;--white:#fff;--navy:#173b45;--teal:#286b68;--mint:#e6efeb;--rust:#b65b3c;--gold:#d8a84e;--line:#d9e0dc;--shadow:0 12px 34px rgba(24,48,50,.08);--radius:18px}
-*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:115px}
-body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.65 "DM Sans",sans-serif}
-button,a,textarea{font:inherit}button{cursor:pointer}
-.top{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
-.topin{max-width:1120px;margin:auto;padding:12px 24px 10px}
-.brandline{display:flex;align-items:center;gap:12px}.mark{width:34px;height:34px;border-radius:10px;background:var(--navy);display:grid;place-items:center;color:#fff;font:800 15px Manrope}.brand{font:800 14px Manrope;letter-spacing:.01em;color:var(--navy);flex:1}.time{font-size:12px;color:var(--muted)}
-.nav{display:flex;gap:8px;overflow:auto;padding:10px 0 5px;scrollbar-width:none}.nav a{white-space:nowrap;text-decoration:none;color:var(--muted);font-size:13px;font-weight:700;padding:6px 12px;border:1px solid var(--line);border-radius:30px}.nav a:hover,.nav a.active{background:var(--navy);border-color:var(--navy);color:white}
-.progress{height:3px;background:#e8ece9}.progress span{display:block;height:100%;width:0;background:var(--gold);transition:width .2s}
-main{max-width:1120px;margin:auto;padding:30px 24px 90px}
-.intro{min-height:370px;border-radius:26px;overflow:hidden;position:relative;display:flex;align-items:flex-end;color:white;background:#1d3c43;margin:10px 0 38px;box-shadow:var(--shadow)}
+:root{
+  --ink:#202b35;
+  --muted:#53616c;
+  --paper:#f5f6f4;
+  --white:#fff;
+  --navy:#173b45;
+  --teal:#286b68;
+  --mint:#e6efeb;
+  --rust:#b65b3c;
+  --gold:#d8a84e;
+  --line:#d9e0dc;
+  --shadow:0 12px 34px rgba(24,48,50,.08);
+  --radius:18px
+}
+
+*{box-sizing:border-box}
+
+html{
+  scroll-behavior:smooth;
+  scroll-padding-top:115px
+}
+
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font:16px/1.65 "DM Sans",sans-serif
+}
+
+button,a,textarea,input{font:inherit}
+button{cursor:pointer}
+
+.top{
+  position:sticky;
+  top:0;
+  z-index:20;
+  background:rgba(255,255,255,.96);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line)
+}
+
+.topin{
+  max-width:1120px;
+  margin:auto;
+  padding:12px 24px 10px
+}
+
+.brandline{
+  display:flex;
+  align-items:center;
+  gap:12px
+}
+
+.mark{
+  width:34px;
+  height:34px;
+  border-radius:10px;
+  background:var(--navy);
+  display:grid;
+  place-items:center;
+  color:#fff;
+  font:800 15px Manrope
+}
+
+.brand{
+  font:800 14px Manrope;
+  letter-spacing:.01em;
+  color:var(--navy);
+  flex:1
+}
+
+.time{
+  font-size:12px;
+  color:var(--muted)
+}
+
+.nav{
+  display:flex;
+  gap:8px;
+  overflow:auto;
+  padding:10px 0 5px;
+  scrollbar-width:none
+}
+
+.nav a{
+  white-space:nowrap;
+  text-decoration:none;
+  color:var(--muted);
+  font-size:13px;
+  font-weight:700;
+  padding:6px 12px;
+  border:1px solid var(--line);
+  border-radius:30px
+}
+
+.nav a:hover,
+.nav a.active{
+  background:var(--navy);
+  border-color:var(--navy);
+  color:white
+}
+
+.progress{
+  height:3px;
+  background:#e8ece9
+}
+
+.progress span{
+  display:block;
+  height:100%;
+  width:0;
+  background:var(--gold);
+  transition:width .2s
+}
+
+main{
+  max-width:1120px;
+  margin:auto;
+  padding:30px 24px 90px
+}
+
+/* COURSE BANNER */
+
+.intro{
+  min-height:370px;
+  border-radius:26px;
+  overflow:hidden;
+  position:relative;
+  display:flex;
+  align-items:flex-end;
+  color:white;
+  background:#1d3c43;
+  margin:10px 0 38px;
+  box-shadow:var(--shadow)
+}
+
 .intro:before{
   content:"";
   position:absolute;
   inset:0;
   background:
-    linear-gradient(90deg,rgba(11,32,36,.88) 0%,rgba(11,32,36,.63) 52%,rgba(11,32,36,.12) 100%),
-    var(--course-banner-image, linear-gradient(135deg,#1d3c43,#286b68)) center 48%/cover;
-}.introinner{position:relative;max-width:720px;padding:clamp(28px,5vw,58px)}
-.eyebrow{text-transform:uppercase;letter-spacing:.14em;font-size:11px;font-weight:800;color:#e9c77f;margin:0 0 12px}
-h1,h2,h3{font-family:Manrope,sans-serif;line-height:1.18;margin-top:0}h1{font-size:clamp(32px,5vw,54px);margin-bottom:14px;max-width:700px;letter-spacing:-.04em}.intro p{font-size:17px;color:#f0f4f2;max-width:620px;margin:0}
-.intrometa{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}.pill{display:inline-flex;align-items:center;border:1px solid rgba(255,255,255,.38);border-radius:30px;padding:5px 11px;font-size:12px;color:#fff}
-.objectives{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:22px}.objective{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:13px;font-size:13px;color:#fff}
-.module{margin:48px 0 64px;scroll-margin-top:130px}.modulehead{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:22px}.modulehead h2{font-size:clamp(25px,3vw,36px);color:var(--navy);margin:0 0 5px;letter-spacing:-.03em}.modulehead p{margin:0;color:var(--muted);font-size:14px}.duration{flex:none;color:var(--teal);font-size:12px;font-weight:800;background:var(--mint);border-radius:30px;padding:7px 12px}
-.lesson{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:clamp(20px,3vw,32px);margin:16px 0;box-shadow:0 4px 16px rgba(24,48,50,.035);scroll-margin-top:125px}
-.lessonhead{display:flex;gap:16px;align-items:flex-start;margin-bottom:14px}.num{width:34px;height:34px;flex:none;border-radius:10px;background:var(--mint);color:var(--teal);display:grid;place-items:center;font:800 13px Manrope}.sectiontag{font-size:11px;text-transform:uppercase;letter-spacing:.12em;font-weight:800;color:var(--rust);margin:0 0 5px}.lesson h3{font-size:clamp(20px,2.5vw,27px);color:var(--navy);margin:0}.bodycopy{color:var(--muted);max-width:78ch}.bodycopy p{margin:0 0 12px}.bodycopy ul{padding-left:21px;margin:8px 0 14px}.bodycopy li{padding:3px 0}.status{font-size:10px;text-transform:uppercase;letter-spacing:.08em;font-weight:800;color:#785b23;background:#fbf1d9;border-radius:20px;padding:5px 9px;margin-left:auto;white-space:nowrap}
+    linear-gradient(
+      90deg,
+      rgba(11,32,36,.88) 0%,
+      rgba(11,32,36,.63) 52%,
+      rgba(11,32,36,.12) 100%
+    ),
+    var(--course-banner-image,linear-gradient(135deg,#1d3c43,#286b68))
+    center 48%/cover;
+}
+
+.introinner{
+  position:relative;
+  max-width:720px;
+  padding:clamp(28px,5vw,58px)
+}
+
+.eyebrow{
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  font-size:11px;
+  font-weight:800;
+  color:#e9c77f;
+  margin:0 0 12px
+}
+
+h1,h2,h3{
+  font-family:Manrope,sans-serif;
+  line-height:1.18;
+  margin-top:0
+}
+
+h1{
+  font-size:clamp(32px,5vw,54px);
+  margin-bottom:14px;
+  max-width:700px;
+  letter-spacing:-.04em
+}
+
+.intro p{
+  font-size:17px;
+  color:#f0f4f2;
+  max-width:620px;
+  margin:0
+}
+
+.intrometa{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:24px
+}
+
+.pill{
+  display:inline-flex;
+  align-items:center;
+  border:1px solid rgba(255,255,255,.38);
+  border-radius:30px;
+  padding:5px 11px;
+  font-size:12px;
+  color:#fff
+}
+
+.objectives{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin-top:22px
+}
+
+.objective{
+  background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.2);
+  border-radius:12px;
+  padding:13px;
+  font-size:13px;
+  color:#fff
+}
+
+/* MODULES AND LESSONS */
+
+.module{
+  margin:48px 0 64px;
+  scroll-margin-top:130px
+}
+
+.modulehead{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:20px;
+  border-bottom:1px solid var(--line);
+  padding-bottom:18px;
+  margin-bottom:22px
+}
+
+.modulehead h2{
+  font-size:clamp(25px,3vw,36px);
+  color:var(--navy);
+  margin:0 0 5px;
+  letter-spacing:-.03em
+}
+
+.modulehead p{
+  margin:0;
+  color:var(--muted);
+  font-size:14px
+}
+
+.duration{
+  flex:none;
+  color:var(--teal);
+  font-size:12px;
+  font-weight:800;
+  background:var(--mint);
+  border-radius:30px;
+  padding:7px 12px
+}
+
+.lesson{
+  background:var(--white);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:clamp(20px,3vw,32px);
+  margin:16px 0;
+  box-shadow:0 4px 16px rgba(24,48,50,.035);
+  scroll-margin-top:125px
+}
+
+.lessonhead{
+  display:flex;
+  gap:16px;
+  align-items:flex-start;
+  margin-bottom:14px
+}
+
+.num{
+  width:34px;
+  height:34px;
+  flex:none;
+  border-radius:10px;
+  background:var(--mint);
+  color:var(--teal);
+  display:grid;
+  place-items:center;
+  font:800 13px Manrope
+}
+
+.sectiontag{
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  font-weight:800;
+  color:var(--rust);
+  margin:0 0 5px
+}
+
+.lesson h3{
+  font-size:clamp(20px,2.5vw,27px);
+  color:var(--navy);
+  margin:0
+}
+
+.bodycopy{
+  color:var(--muted);
+  max-width:78ch
+}
+
+.bodycopy p{margin:0 0 12px}
+.bodycopy ul{padding-left:21px;margin:8px 0 14px}
+.bodycopy li{padding:3px 0}
+
+.status{
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  font-weight:800;
+  color:#785b23;
+  background:#fbf1d9;
+  border-radius:20px;
+  padding:5px 9px;
+  margin-left:auto;
+  white-space:nowrap
+}
+
+/* MEDIA: IMPORTANT POSITIONING CORRECTION */
+
+.media{
+  position:relative;
+  width:100%;
+  aspect-ratio:16/9;
+  overflow:hidden;
+  border-radius:16px;
+  background:#e6efeb;
+  margin:16px 0;
+  isolation:isolate
+}
+
+.media img,
+.media video{
+  display:block;
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  border:0
+}
+
 .media .placeholder{
   position:absolute;
   inset:0;
@@ -40,48 +370,390 @@ h1,h2,h3{font-family:Manrope,sans-serif;line-height:1.18;margin-top:0}h1{font-si
   text-align:center;
   padding:24px;
   background:
-    linear-gradient(90deg,rgba(12,37,40,.8),rgba(12,37,40,.2)),
-    var(--media-placeholder-image, linear-gradient(135deg,#203b3e,#286b68)) center/cover;
-}.tabrow{display:flex;gap:8px;overflow:auto;padding:8px 0 12px}.tabbtn{border:1px solid var(--line);background:#f8faf8;color:var(--muted);border-radius:30px;padding:9px 14px;font-size:13px;font-weight:700;white-space:nowrap}.tabbtn[aria-selected=true]{background:var(--navy);color:#fff;border-color:var(--navy)}
-.tabpanel{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px}.insight{padding:18px;border-radius:14px;background:#f5f7f5;border-top:3px solid var(--rust)}.insight.ai{border-color:var(--teal);background:#eff5f2}.insight b{display:block;color:var(--navy);font-size:12px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}.insight p{margin:0;color:var(--muted)}
-.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}.flip{min-height:180px;border:1px solid var(--line);border-radius:15px;background:#f7f8f6;text-align:left;padding:20px;color:var(--ink);display:flex;flex-direction:column;justify-content:space-between;transition:.2s}.flip:hover{transform:translateY(-3px);box-shadow:var(--shadow)}.flip .frontlabel,.flip .backlabel{font-size:10px;font-weight:800;letter-spacing:.13em;color:var(--rust)}.flip strong{font:700 17px/1.35 Manrope;color:var(--navy);display:block;margin:12px 0}.flip .hint{font-size:12px;color:var(--muted)}.flip.open{background:var(--mint);border-color:#a8c6b8}.flip.open strong{font:500 14px/1.55 "DM Sans";color:var(--ink)}
-.option{width:100%;display:flex;gap:12px;align-items:flex-start;text-align:left;border:1px solid var(--line);background:#fafbfa;color:var(--ink);padding:14px 16px;border-radius:13px;margin:9px 0}.option .letter{width:27px;height:27px;flex:none;border-radius:50%;display:grid;place-items:center;background:#e9eeeb;color:var(--navy);font-weight:800;font-size:12px}.option:hover{border-color:var(--teal)}.option.correct{border:2px solid #39815d;background:#edf6ef}.option.incorrect{border:2px solid #bd624d;background:#fbf0ed}.feedback{display:none;padding:14px 16px;border-radius:12px;background:var(--mint);color:var(--ink);margin-top:12px}.feedback.show{display:block}.reflection{width:100%;min-height:120px;padding:14px;border:1px solid var(--line);border-radius:12px;color:var(--ink);background:#fbfcfb;resize:vertical}.saved{font-size:12px;color:var(--teal);margin-top:7px}
-.recap{display:grid;gap:10px}.recapitem{display:flex;gap:13px;align-items:flex-start;padding:13px 15px;background:#f4f7f5;border-radius:12px;color:var(--muted)}.tick{color:var(--teal);font-weight:900}
-.endnote{background:var(--navy);color:#fff;border-radius:20px;padding:26px;margin-top:38px}.endnote h2{color:#fff;margin-bottom:8px}.endnote p{color:#dbe6e1;margin:0}
-footer{border-top:1px solid var(--line);padding:22px;text-align:center;color:var(--muted);font-size:12px}
-@media(max-width:700px){main{padding:18px 14px 60px}.topin{padding:10px 14px}.intro{min-height:420px}.objectives{grid-template-columns:1fr}.modulehead{align-items:flex-start;flex-direction:column}.tabpanel{grid-template-columns:1fr}.cards{grid-template-columns:1fr}.lesson{padding:19px}.status{display:none}}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
-</style></head><body>
-<div class="top"><div class="topin"><div class="brandline"><div class="mark">AI</div><div class="brand" id="courseTitle">PRACTICAL AI FOR TEXTILE SMEs</div><div class="time" id="duration">60-minute learning journey</div></div><nav class="nav" id="nav" aria-label="Course sections"></nav></div><div class="progress"><span id="progress"></span></div></div>
-<main id="main"><div class="intro"><div class="introinner"><p class="eyebrow">A practical learning journey for business owners</p><h1>Practical AI for Textile-sector SMEs</h1><p>Explore where AI may help, how to evaluate a solution and how to think about value before investing.</p></div></div></main>
-<footer>Prototype learning experience · Content and examples are working drafts pending subject-matter and SME validation.</footer>
+    linear-gradient(
+      90deg,
+      rgba(12,37,40,.8),
+      rgba(12,37,40,.2)
+    ),
+    var(--media-placeholder-image,linear-gradient(135deg,#203b3e,#286b68))
+    center/cover
+}
+
+.media .play{
+  font-size:38px;
+  margin-bottom:8px
+}
+
+/* TABS */
+
+.tabrow{
+  display:flex;
+  gap:8px;
+  overflow:auto;
+  padding:8px 0 12px
+}
+
+.tabbtn{
+  border:1px solid var(--line);
+  background:#f8faf8;
+  color:var(--muted);
+  border-radius:30px;
+  padding:9px 14px;
+  font-size:13px;
+  font-weight:700;
+  white-space:nowrap
+}
+
+.tabbtn[aria-selected=true]{
+  background:var(--navy);
+  color:#fff;
+  border-color:var(--navy)
+}
+
+.tabpanel{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:6px
+}
+
+.insight{
+  padding:18px;
+  border-radius:14px;
+  background:#f5f7f5;
+  border-top:3px solid var(--rust)
+}
+
+.insight.ai{
+  border-color:var(--teal);
+  background:#eff5f2
+}
+
+.insight b{
+  display:block;
+  color:var(--navy);
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  margin-bottom:8px
+}
+
+.insight p{
+  margin:0;
+  color:var(--muted)
+}
+
+/* FLIPCARDS */
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin-top:18px
+}
+
+.flip{
+  min-height:180px;
+  border:1px solid var(--line);
+  border-radius:15px;
+  background:#f7f8f6;
+  text-align:left;
+  padding:20px;
+  color:var(--ink);
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  transition:.2s
+}
+
+.flip:hover{
+  transform:translateY(-3px);
+  box-shadow:var(--shadow)
+}
+
+.flip .frontlabel,
+.flip .backlabel{
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.13em;
+  color:var(--rust)
+}
+
+.flip strong{
+  font:700 17px/1.35 Manrope;
+  color:var(--navy);
+  display:block;
+  margin:12px 0
+}
+
+.flip .hint{
+  font-size:12px;
+  color:var(--muted)
+}
+
+.flip.open{
+  background:var(--mint);
+  border-color:#a8c6b8
+}
+
+.flip.open strong{
+  font:500 14px/1.55 "DM Sans";
+  color:var(--ink)
+}
+
+/* QUIZ */
+
+.option{
+  width:100%;
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  text-align:left;
+  border:1px solid var(--line);
+  background:#fafbfa;
+  color:var(--ink);
+  padding:14px 16px;
+  border-radius:13px;
+  margin:9px 0
+}
+
+.option .letter{
+  width:27px;
+  height:27px;
+  flex:none;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:#e9eeeb;
+  color:var(--navy);
+  font-weight:800;
+  font-size:12px
+}
+
+.option:hover{border-color:var(--teal)}
+
+.option.correct{
+  border:2px solid #39815d;
+  background:#edf6ef
+}
+
+.option.incorrect{
+  border:2px solid #bd624d;
+  background:#fbf0ed
+}
+
+.option:disabled{cursor:default;opacity:1}
+
+.feedback{
+  display:none;
+  padding:14px 16px;
+  border-radius:12px;
+  background:var(--mint);
+  color:var(--ink);
+  margin-top:12px
+}
+
+.feedback.show{display:block}
+
+/* REFLECTION */
+
+.reflection{
+  width:100%;
+  min-height:120px;
+  padding:14px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  color:var(--ink);
+  background:#fbfcfb;
+  resize:vertical
+}
+
+.saved{
+  font-size:12px;
+  color:var(--teal);
+  margin-top:7px
+}
+
+.primary{
+  border:0;
+  background:var(--navy);
+  color:white;
+  padding:11px 20px;
+  border-radius:10px;
+  font-weight:700
+}
+
+.primary:disabled{opacity:.6;cursor:wait}
+
+/* END AND FOOTER */
+
+.endnote{
+  background:var(--navy);
+  color:#fff;
+  border-radius:20px;
+  padding:26px;
+  margin-top:38px
+}
+
+.endnote h2{
+  color:#fff;
+  margin-bottom:8px
+}
+
+.endnote p{
+  color:#dbe6e1;
+  margin:0
+}
+
+footer{
+  border-top:1px solid var(--line);
+  padding:22px;
+  text-align:center;
+  color:var(--muted);
+  font-size:12px
+}
+
+/* RESPONSIVE */
+
+@media(max-width:700px){
+  main{padding:18px 14px 60px}
+  .topin{padding:10px 14px}
+  .intro{min-height:420px}
+  .objectives{grid-template-columns:1fr}
+  .modulehead{
+    align-items:flex-start;
+    flex-direction:column
+  }
+  .tabpanel{grid-template-columns:1fr}
+  .cards{grid-template-columns:1fr}
+  .lesson{padding:19px}
+  .status{display:none}
+}
+
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{transition:none!important}
+}
+</style>
+</head>
+
+<body>
+
+<div class="top">
+  <div class="topin">
+    <div class="brandline">
+      <div class="mark">AI</div>
+      <div class="brand" id="courseTitle">PRACTICAL AI FOR TEXTILE SMEs</div>
+      <div class="time" id="duration">60-minute learning journey</div>
+    </div>
+    <nav class="nav" id="nav" aria-label="Course sections"></nav>
+  </div>
+  <div class="progress">
+    <span id="progress"></span>
+  </div>
+</div>
+
+<main id="main">
+  <div class="intro">
+    <div class="introinner">
+      <p class="eyebrow">A practical learning journey for business owners</p>
+      <h1>Practical AI for Textile-sector SMEs</h1>
+      <p>Explore where AI may help, how to evaluate a solution and how to think about value before investing.</p>
+    </div>
+  </div>
+</main>
+
+<footer>
+  Prototype learning experience · Content and examples are working drafts pending subject-matter and SME validation.
+</footer>
+
 <script>
 const CONFIG = {
-SHEET_ID: '1JGXao8v56gNKYCF-EhF8PCdrlN0MjrM0-PI3eQ7OO_I',
-  OVERVIEW_TAB: 'Course Overview',
-  STATUSES: ['Approved', 'Draft', 'Example', 'In review'],
-  APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbyQ_f-jMEKrxVJGhz4d9AiOFHobca4TY6TAWLJ7iUevSdM68GASsf5gXQUU1BJr1VDTrw/exec',
-  COURSE_ID: 'PRACTICAL-AI-SME'
+  SHEET_ID:'1JGXao8v56gNKYCF-EhF8PCdrlN0MjrM0-PI3eQ7OO_I',
+  OVERVIEW_TAB:'Course Overview',
+  STATUSES:['Approved','Draft','Example','In review'],
+  APPS_SCRIPT_URL:'https://script.google.com/macros/s/AKfycbyQ_f-jMEKrxVJGhz4d9AiOFHobca4TY6TAWLJ7iUevSdM68GASsf5gXQUU1BJr1VDTrw/exec',
+  COURSE_ID:'PRACTICAL-AI-SME'
 };
-const DATA={"title": "Practical AI for Textile-sector SMEs", "modules": [{"id": "M01", "tab": "Module 1", "title": "Finding Opportunities for AI in the Business", "min": 25}, {"id": "M02", "tab": "Module 2", "title": "Evaluating AI Solutions", "min": 18}, {"id": "M03", "tab": "Module 3", "title": "Costs, Benefits and ROI", "min": 17}], "rows": {"M01": [{"seq": 1, "screen": "M01-S01", "section": "Welcome", "contentId": "M01-001", "role": "module_intro", "type": "text", "head": "Finding Opportunities for AI in the Business", "text": "Meet Meena, who runs a 40-person weaving unit and sells fabric to garment makers and exporters. Over three short modules you will follow her business as she looks for places AI could help, checks whether a solution can be trusted, and works out whether it pays for itself.\nIn this module you will:\n- Spot repeated tasks and costly problems in your own business\n- Match them to what AI can realistically do today\n- Choose one small first trial", "detail": "", "opt": "", "ok": "", "fb": "", "next": "", "media": "", "asset": "", "objective": "", "status": "Example", "show": "Y"}, {"seq": 2, "screen": "M01-S02", "section": "Welcome", "contentId": "M01-002", "role": "explanation", "type": "video", "head": "Why AI, and why now?", "text": "Short intro video (2–3 minutes). Script to be written after research and SME review.", "detail": "Video placeholder. Paste a direct .mp4/.webm URL in Media URL to play it.", "opt": "", "ok": "", "fb": "", "next": "", "media": "", "asset": "V001", "objective": "", "status": "Example", "show": "Y"}, {"seq": 3, "screen": "M01-S03", "section": "Opportunities", "contentId": "M01-003", "role": "explanation", "type": "tabs", "head": "Where does AI show up along the textile chain?", "text": "Select each stage to see a common headache and a possible AI starting point. Working content, to be validated with SMEs.", "detail": "", "opt": "", "ok": "", "fb": "", "next": "", "media": "", "asset": "", "objective": "M01-O1", "status": "Example", "show": "Y"}, {"seq": 4, "screen": "M01-S03", "section": "Opportunities", "contentId": "M01-004", "role": "item", "type": "", "head": "Fibre and spinning", "text": "Common headache: raw material prices move, and buying at the wrong time hurts margins.\nPossible AI starting point: tools that track price trends and help forecast demand.", "detail": "", "opt": "", "ok": "", "fb": "", "next": "", "media": "", "asset": "", "objective": "M01-O1", "status": "Example", "show": "Y"}, {"seq": 5, "screen": "M01-S03", "section": "Opportunities", "contentId": "M01-005", "role": "item", "type": "", "head": "Weaving and knitting", "text": "Common headache: fabric defects found late, and machines stopping without warning.\nPossible AI starting point: camera-based defect checks and maintenance alerts from machine data.", "detail": "", "opt": "", "ok": "", "fb": "", "next": "", "media": "", "asset": "", "objective": "M01-O1", "status": "Example", "show": "Y"}, {"seq": 6, "screen": "M01-S03", "section": "Opportunities", "contentId": "M01-006", "role": "item", "type": "", "head": "Processing", "text": "Common headache: shade mismatches, rework, and buyer rules on chemicals and water.\nPossible AI starting point: colour-matching support and help drafting compliance documents.", "detail": "", "opt": "", "ok": "", "fb": "", "next": "", "media": "", "asset": "", "objective": "M01-O1", "status": "Example", "show": "Y"}, {"seq": 7, "screen": "M01-S03", "section": "Opportunities", "contentId": "M01-007", "role": "item", "type": "", "head": "Garment making", "text": "Common headache: planning orders across lines, and rejections close to shipment.\nPossible AI starting point: scheduling support and image-based quality checks.", "detail": "", "opt": "", "ok": "", "fb": "", "next": "", "media": "", "asset": "", "objective": "M01-O1", "status": "Example", "show": "Y"}, {"seq": 8, "screen": "M01-S03", "section": "Opportunities", "contentId": "M01-008", "role": "item", "type": "", "head": "Trading and exports", "text": "Common headache: slow replies to enquiries, weak catalogues and buyer audits.\nPossible AI starting point: AI-drafted replies and company profiles, and summaries of buyer requirements.", "detail": "", "opt": "", "ok": "", "fb": "", "next": "", "media": "", "asset": "", "objective": "M01-O1", "status": "Example", "show": "Y"}, {"seq": 9, "screen": "M01-S04", "section": "Myths", "contentId": "M01-009", "role": "explanation", "type": "flipcards", "head": "Three AI myths: tap each card", "text": "Tap a card to flip it and see what is closer to the truth.", "detail": "", "opt": "", "ok": "", "fb": "", "next": "", "media": "", "asset": "", "objective": "M01-O1", "status": "Example", "show": "Y"}, {"seq": 10, "screen": "M01-S04", "section": "Myths", "contentId": "M01-010", "role": "item", "type": "", "head": "Myth: “AI needs a big IT team and a big budget.”", "text": "Reality: Many useful starting points are chat-based tools that cost little. Bigger systems come later, if a trial proves its value.", "detail": "", "opt": "", "ok": "", "fb": "", "next": "", "media": "", "asset": "", "objective": "M01-O1", "status": "Example", "show": "Y"}, {"seq": 11, "screen": "M01-S04", "section": "Myths", "contentId": "M01-011", "role": "item", "type": "", "head": "Myth: “AI will replace my skilled workers.”", "text": "Reality: Today’s tools mostly speed up repeated tasks such as drafting and checking. Your people’s judgement is still needed.", "detail": "", "opt": "", "ok": "", "fb": "", "next": "", "media": "", "asset": "", "objective": "M01-O1", "status": "Example", "show": "Y"}, {"seq": 12, "screen": "M01-S04", "section": "Myths", "contentId": "M01-012", "role": "item", "type": "", "head": "Myth: “If AI says it, it must be right.”", "text": "Reality: AI can sound confident and still be wrong. Check numbers, names and claims before they reach a buyer.", "detail": "", "opt": "", "ok": "", "fb": "", "next": "", "media": "", "asset": "", "objective": "M01-O1", "status": "Example", "show": "Y"}, {"seq": 13, "screen": "M01-S05", "section": "Check", "contentId": "M01-013", "role": "check", "type": "quiz_single", "head": "Which first trial?", "text": "Meena gets about 20 buyer enquiries a week and her replies are slow. Which is the best first AI trial?", "detail": "", "opt": "", "ok": "", "fb": "", "next": "", "media": "", "asset": "", "objective": "M01-O2", "status": "Example", "show": "Y"}, {"seq": 14, "screen": "M01-S05", "section": "Check", "contentId": "M01-014", "role": "item", "type": "", "head": "", "text": "", "detail": "", "opt": "Install camera defect detection on every loom", "ok": "N", "fb": "This can be valuable, but it is costly and slow to set up. It is a poor first trial.", "next": "", "media": "", "asset": "", "objective": "M01-O2", "status": "Example", "show": "Y"}, {"seq": 15, "screen": "M01-S05", "section": "Check", "contentId": "M01-015", "role": "item", "type": "", "head": "", "text": "", "detail": "", "opt": "Use an AI assistant to draft enquiry replies, which Meena checks before sending", "ok": "Y", "fb": "Right. It is low cost, quick to try, easy to measure (reply time), and a person stays in control.", "next": "", "media": "", "asset": "", "objective": "M01-O2", "status": "Example", "show": "Y"}, {"seq": 16, "screen": "M01-S05", "section": "Check", "contentId": "M01-016", "role": "item", "type": "", "head": "", "text": "", "detail": "", "opt": "Replace the sales team with AI", "ok": "N", "fb": "Too risky. Buyers value relationships, and AI makes mistakes.", "next": "", "media": "", "asset": "", "objective": "M01-O2", "status": "Example", "show": "Y"}, {"seq": 17, "screen": "M01-S05", "section": "Check", "contentId": "M01-017", "role": "item", "type": "", "head": "", "text": "", "detail": "", "opt": "Wait until AI matures", "ok": "N", "fb": "Waiting has a cost too. Small, safe trials let you learn while the risk is low.", "next": "", "media": "", "asset": "", "objective": "M01-O2", "status": "Example", "show": "Y"}, {"seq": 18, "screen": "M01-S06", "section": "Scenario", "contentId": "M01-018", "role": "activity", "type": "scenario_branch", "head": "A vendor’s pitch", "text": "A vendor visits and offers an AI defect-detection system. The demo looks impressive. What does Meena do first?", "detail": "Not graded. Each option has feedback and can jump to a Next Screen ID.", "opt": "", "ok": "", "fb": "", "next": "", "media": "", "asset": "", "objective": "M01-O2", "status": "Example", "show": "Y"}, {"seq": 19, "screen": "M01-S06", "section": "Scenario", "contentId": "M01-019", "role": "item", "type": "", "head": "", "text": "", "detail": "", "opt": "Sign up quickly before a competitor does", "ok": "", "fb": "Pressure is a warning sign. Without a trial you do not know whether it works on your fabrics.", "next": "M01-S07", "media": "", "asset": "", "objective": "M01-O2", "status": "Example", "show": "Y"}, {"seq": 20, "screen": "M01-S06", "section": "Scenario", "contentId": "M01-020", "role": "item", "type": "", "head": "", "text": "", "detail": "", "opt": "Ask for a small paid pilot on one loom line, with agreed measures of success", "ok": "", "fb": "A sensible next step. Module 2 shows how to evaluate solutions like this.", "next": "M01-S07", "media": "", "asset": "", "objective": "M01-O2", "status": "Example", "show": "Y"}, {"seq": 21, "screen": "M01-S06", "section": "Scenario", "contentId": "M01-021", "role": "item", "type": "", "head": "", "text": "", "detail": "", "opt": "Say no and never look at AI again", "ok": "", "fb": "Saying no to a bad deal is fine. Closing the door on all AI means missing safer trials.", "next": "M01-S07", "media": "", "asset": "", "objective": "M01-O2", "status": "Example", "show": "Y"}, {"seq": 22, "screen": "M01-S07", "section": "Your turn", "contentId": "M01-022", "role": "activity", "type": "reflection", "head": "Your turn", "text": "Think of one repeated task or costly problem in your own business. Write it in a sentence or two. You will use it in Modules 2 and 3.", "detail": "Reflection box. Answer is saved on the learner’s own device only.", "opt": "", "ok": "", "fb": "", "next": "", "media": "", "asset": "", "objective": "M01-O3", "status": "Example", "show": "Y"}, {"seq": 23, "screen": "M01-S08", "section": "Recap", "contentId": "M01-023", "role": "recap", "type": "text", "head": "Key takeaways", "text": "- Look for repeated tasks and costly problems first, not for “AI” itself\n- Start with low-cost, low-risk trials where a person checks the result\n- Be wary of big promises: ask for a pilot and clear measures of success\n- Next: how to evaluate AI solutions", "detail": "", "opt": "", "ok": "", "fb": "", "next": "", "media": "", "asset": "", "objective": "", "status": "Example", "show": "Y"}], "M02": [{"seq": 1, "screen": "M02-S01", "section": "Module setup", "contentId": "M02-001", "role": "module_intro", "type": "text", "head": "Evaluating AI Solutions", "text": "Placeholder only. Develop after research and subject-matter review.", "detail": "", "opt": "", "ok": "", "fb": "", "next": "", "media": "", "asset": "", "objective": "", "status": "Draft", "show": "Y"}], "M03": [{"seq": 1, "screen": "M03-S01", "section": "Module setup", "contentId": "M03-001", "role": "module_intro", "type": "text", "head": "Costs, Benefits and ROI", "text": "Placeholder only. Develop after research and subject-matter review.", "detail": "", "opt": "", "ok": "", "fb": "", "next": "", "media": "", "asset": "", "objective": "", "status": "Draft", "show": "Y"}]}};
-const $=id=>document.getElementById(id);
-const safe=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-// --------------------------------------------
-// LEARNER IDENTITY
-// --------------------------------------------
 
+/*
+  Embedded course data is retained as a fallback.
+  Google Sheets remains the primary source when available.
+*/
+
+const DATA = {
+  "title":"Practical AI for Textile-sector SMEs",
+  "modules":[
+    {"id":"M01","tab":"Module 1","title":"Finding Opportunities for AI in the Business","min":25},
+    {"id":"M02","tab":"Module 2","title":"Evaluating AI Solutions","min":18},
+    {"id":"M03","tab":"Module 3","title":"Costs, Benefits and ROI","min":17}
+  ],
+  "rows":{
+    "M01":[
+      {"seq":1,"screen":"M01-S01","section":"Welcome","contentId":"M01-001","role":"module_intro","type":"text","head":"Finding Opportunities for AI in the Business","text":"Meet Meena, who runs a 40-person weaving unit and sells fabric to garment makers and exporters. Over three short modules you will follow her business as she looks for places AI could help, checks whether a solution can be trusted, and works out whether it pays for itself.\nIn this module you will:\n- Spot repeated tasks and costly problems in your own business\n- Match them to what AI can realistically do today\n- Choose one small first trial","detail":"","opt":"","ok":"","fb":"","next":"","media":"","asset":"","objective":"","status":"Example","show":"Y"},
+      {"seq":2,"screen":"M01-S02","section":"Welcome","contentId":"M01-002","role":"explanation","type":"video","head":"Why AI, and why now?","text":"Short intro video (2–3 minutes). Script to be written after research and SME review.","detail":"Video placeholder. Paste a direct .mp4/.webm URL in Media URL to play it.","opt":"","ok":"","fb":"","next":"","media":"","asset":"V001","objective":"","status":"Example","show":"Y"},
+      {"seq":3,"screen":"M01-S03","section":"Opportunities","contentId":"M01-003","role":"explanation","type":"tabs","head":"Where does AI show up along the textile chain?","text":"Select each stage to see a common headache and a possible AI starting point. Working content, to be validated with SMEs.","detail":"","opt":"","ok":"","fb":"","next":"","media":"","asset":"","objective":"M01-O1","status":"Example","show":"Y"},
+      {"seq":4,"screen":"M01-S03","section":"Opportunities","contentId":"M01-004","role":"item","type":"","head":"Fibre and spinning","text":"Common headache: raw material prices move, and buying at the wrong time hurts margins.\nPossible AI starting point: tools that track price trends and help forecast demand.","detail":"","opt":"","ok":"","fb":"","next":"","media":"","asset":"","objective":"M01-O1","status":"Example","show":"Y"},
+      {"seq":5,"screen":"M01-S03","section":"Opportunities","contentId":"M01-005","role":"item","type":"","head":"Weaving and knitting","text":"Common headache: fabric defects found late, and machines stopping without warning.\nPossible AI starting point: camera-based defect checks and maintenance alerts from machine data.","detail":"","opt":"","ok":"","fb":"","next":"","media":"","asset":"","objective":"M01-O1","status":"Example","show":"Y"},
+      {"seq":6,"screen":"M01-S03","section":"Opportunities","contentId":"M01-006","role":"item","type":"","head":"Processing","text":"Common headache: shade mismatches, rework, and buyer rules on chemicals and water.\nPossible AI starting point: colour-matching support and help drafting compliance documents.","detail":"","opt":"","ok":"","fb":"","next":"","media":"","asset":"","objective":"M01-O1","status":"Example","show":"Y"},
+      {"seq":7,"screen":"M01-S03","section":"Opportunities","contentId":"M01-007","role":"item","type":"","head":"Garment making","text":"Common headache: planning orders across lines, and rejections close to shipment.\nPossible AI starting point: scheduling support and image-based quality checks.","detail":"","opt":"","ok":"","fb":"","next":"","media":"","asset":"","objective":"M01-O1","status":"Example","show":"Y"},
+      {"seq":8,"screen":"M01-S03","section":"Opportunities","contentId":"M01-008","role":"item","type":"","head":"Trading and exports","text":"Common headache: slow replies to enquiries, weak catalogues and buyer audits.\nPossible AI starting point: AI-drafted replies and company profiles, and summaries of buyer requirements.","detail":"","opt":"","ok":"","fb":"","next":"","media":"","asset":"","objective":"M01-O1","status":"Example","show":"Y"},
+      {"seq":9,"screen":"M01-S04","section":"Myths","contentId":"M01-009","role":"explanation","type":"flipcards","head":"Three AI myths: tap each card","text":"Tap a card to flip it and see what is closer to the truth.","detail":"","opt":"","ok":"","fb":"","next":"","media":"","asset":"","objective":"M01-O1","status":"Example","show":"Y"},
+      {"seq":10,"screen":"M01-S04","section":"Myths","contentId":"M01-010","role":"item","type":"","head":"Myth: “AI needs a big IT team and a big budget.”","text":"Reality: Many useful starting points are chat-based tools that cost little. Bigger systems come later, if a trial proves its value.","detail":"","opt":"","ok":"","fb":"","next":"","media":"","asset":"","objective":"M01-O1","status":"Example","show":"Y"},
+      {"seq":11,"screen":"M01-S04","section":"Myths","contentId":"M01-011","role":"item","type":"","head":"Myth: “AI will replace my skilled workers.”","text":"Reality: Today’s tools mostly speed up repeated tasks such as drafting and checking. Your people’s judgement is still needed.","detail":"","opt":"","ok":"","fb":"","next":"","media":"","asset":"","objective":"M01-O1","status":"Example","show":"Y"},
+      {"seq":12,"screen":"M01-S04","section":"Myths","contentId":"M01-012","role":"item","type":"","head":"Myth: “If AI says it, it must be right.”","text":"Reality: AI can sound confident and still be wrong. Check numbers, names and claims before they reach a buyer.","detail":"","opt":"","ok":"","fb":"","next":"","media":"","asset":"","objective":"M01-O1","status":"Example","show":"Y"},
+      {"seq":13,"screen":"M01-S05","section":"Check","contentId":"M01-013","role":"check","type":"quiz_single","head":"Which first trial?","text":"Meena gets about 20 buyer enquiries a week and her replies are slow. Which is the best first AI trial?","detail":"","opt":"","ok":"","fb":"","next":"","media":"","asset":"","objective":"M01-O2","status":"Example","show":"Y"},
+      {"seq":14,"screen":"M01-S05","section":"Check","contentId":"M01-014","role":"item","type":"","head":"","text":"","detail":"","opt":"Install camera defect detection on every loom","ok":"N","fb":"This can be valuable, but it is costly and slow to set up. It is a poor first trial.","next":"","media":"","asset":"","objective":"M01-O2","status":"Example","show":"Y"},
+      {"seq":15,"screen":"M01-S05","section":"Check","contentId":"M01-015","role":"item","type":"","head":"","text":"","detail":"","opt":"Use an AI assistant to draft enquiry replies, which Meena checks before sending","ok":"Y","fb":"Right. It is low cost, quick to try, easy to measure (reply time), and a person stays in control.","next":"","media":"","asset":"","objective":"M01-O2","status":"Example","show":"Y"},
+      {"seq":16,"screen":"M01-S05","section":"Check","contentId":"M01-016","role":"item","type":"","head":"","text":"","detail":"","opt":"Replace the sales team with AI","ok":"N","fb":"Too risky. Buyers value relationships, and AI makes mistakes.","next":"","media":"","asset":"","objective":"M01-O2","status":"Example","show":"Y"},
+      {"seq":17,"screen":"M01-S05","section":"Check","contentId":"M01-017","role":"item","type":"","head":"","text":"","detail":"","opt":"Wait until AI matures","ok":"N","fb":"Waiting has a cost too. Small, safe trials let you learn while the risk is low.","next":"","media":"","asset":"","objective":"M01-O2","status":"Example","show":"Y"},
+      {"seq":18,"screen":"M01-S06","section":"Scenario","contentId":"M01-018","role":"activity","type":"scenario_branch","head":"A vendor’s pitch","text":"A vendor visits and offers an AI defect-detection system. The demo looks impressive. What does Meena do first?","detail":"Not graded. Each option has feedback and can jump to a Next Screen ID.","opt":"","ok":"","fb":"","next":"","media":"","asset":"","objective":"M01-O2","status":"Example","show":"Y"},
+      {"seq":19,"screen":"M01-S06","section":"Scenario","contentId":"M01-019","role":"item","type":"","head":"","text":"","detail":"","opt":"Sign up quickly before a competitor does","ok":"","fb":"Pressure is a warning sign. Without a trial you do not know whether it works on your fabrics.","next":"M01-S07","media":"","asset":"","objective":"M01-O2","status":"Example","show":"Y"},
+      {"seq":20,"screen":"M01-S06","section":"Scenario","contentId":"M01-020","role":"item","type":"","head":"","text":"","detail":"","opt":"Ask for a small paid pilot on one loom line, with agreed measures of success","ok":"","fb":"A sensible next step. Module 2 shows how to evaluate solutions like this.","next":"M01-S07","media":"","asset":"","objective":"M01-O2","status":"Example","show":"Y"},
+      {"seq":21,"screen":"M01-S06","section":"Scenario","contentId":"M01-021","role":"item","type":"","head":"","text":"","detail":"","opt":"Say no and never look at AI again","ok":"","fb":"Saying no to a bad deal is fine. Closing the door on all AI means missing safer trials.","next":"M01-S07","media":"","asset":"","objective":"M01-O2","status":"Example","show":"Y"},
+      {"seq":22,"screen":"M01-S07","section":"Your turn","contentId":"M01-022","role":"activity","type":"reflection","head":"Your turn","text":"Think of one repeated task or costly problem in your own business. Write it in a sentence or two. You will use it in Modules 2 and 3.","detail":"Reflection box. Answer is saved on the learner’s own device only.","opt":"","ok":"","fb":"","next":"","media":"","asset":"","objective":"M01-O3","status":"Example","show":"Y"},
+      {"seq":23,"screen":"M01-S08","section":"Recap","contentId":"M01-023","role":"recap","type":"text","head":"Key takeaways","text":"- Look for repeated tasks and costly problems first, not for “AI” itself\n- Start with low-cost, low-risk trials where a person checks the result\n- Be wary of big promises: ask for a pilot and clear measures of success\n- Next: how to evaluate AI solutions","detail":"","opt":"","ok":"","fb":"","next":"","media":"","asset":"","objective":"","status":"Example","show":"Y"}
+    ],
+    "M02":[
+      {"seq":1,"screen":"M02-S01","section":"Module setup","contentId":"M02-001","role":"module_intro","type":"text","head":"Evaluating AI Solutions","text":"Placeholder only. Develop after research and subject-matter review.","detail":"","opt":"","ok":"","fb":"","next":"","media":"","asset":"","objective":"","status":"Draft","show":"Y"}
+    ],
+    "M03":[
+      {"seq":1,"screen":"M03-S01","section":"Module setup","contentId":"M03-001","role":"module_intro","type":"text","head":"Costs, Benefits and ROI","text":"Placeholder only. Develop after research and subject-matter review.","detail":"","opt":"","ok":"","fb":"","next":"","media":"","asset":"","objective":"","status":"Draft","show":"Y"}
+    ]
+  }
+};
+
+const $ = id => document.getElementById(id);
+
+const safe = s => String(s ?? '').replace(/[&<>"']/g,c=>({
+  '&':'&amp;',
+  '<':'&lt;',
+  '>':'&gt;',
+  '"':'&quot;',
+  "'":'&#39;'
+}[c]));
+
+/* LEARNER IDENTITY */
 
 let learnerProfile = {
-  learnerId: '',
-  learnerName: '',
-  organisation: ''
+  learnerId:'',
+  learnerName:'',
+  organisation:''
 };
-let courseAssets = {};
 
-function getAssetUrl(assetId) {
+let courseAssets = {};
+let learnerResponses = [];
+let learnerRegistered = false;
+let grouped = [];
+
+function getAssetUrl(assetId){
+
   const asset = courseAssets[assetId];
 
-  if (!asset || String(asset.status).toLowerCase() !== 'approved') {
+  if(
+    !asset ||
+    String(asset.status || '').trim().toLowerCase() !== 'approved'
+  ){
     return '';
   }
 
@@ -89,16 +761,14 @@ function getAssetUrl(assetId) {
 
   return /^https?:\/\//i.test(url) ? url : '';
 }
-let learnerResponses = [];
-let learnerRegistered = false;
 
+function renderLearnerPanel(){
 
-
-
-function renderLearnerPanel() {
   return `
     <section class="lesson" id="learner-registration">
+
       <p class="sectiontag">Before you begin</p>
+
       <h3>Let's get started</h3>
 
       <p class="bodycopy">
@@ -139,326 +809,724 @@ function renderLearnerPanel() {
         Continue
       </button>
 
-      <div id="learnerProfileStatus" class="saved" aria-live="polite"></div>
+      <div
+        id="learnerProfileStatus"
+        class="saved"
+        aria-live="polite"
+      ></div>
 
       <p style="font-size:12px;color:var(--muted)">
         Your name, organisation and learning responses will be stored
         in the course learning record. Please do not enter confidential
         business, customer or employee information.
       </p>
+
     </section>
   `;
 }
 
-function paragraphs(t){return String(t||'').split(/\n/).map(line=>line.startsWith('- ')?`<li>${safe(line.slice(2))}</li>`:line.trim()?`<p>${safe(line)}</p>`:'').join('').replace(/(<li>.*?<\/li>)+/gs,m=>`<ul>${m}</ul>`)}
+function paragraphs(t){
 
-function groupScreens(d) {
+  return String(t || '')
+    .split(/\n/)
+    .map(line =>
+      line.startsWith('- ')
+        ? `<li>${safe(line.slice(2))}</li>`
+        : line.trim()
+          ? `<p>${safe(line)}</p>`
+          : ''
+    )
+    .join('')
+    .replace(/(<li>.*?<\/li>)+/gs,m=>`<ul>${m}</ul>`);
+}
+
+/* SCREEN GROUPING
+   Normalises spaces and capitalisation so minor spreadsheet
+   formatting differences do not hide otherwise valid screens.
+*/
+
+function groupScreens(d){
+
   let out = [];
 
-  d.modules.forEach(m => {
+  (d.modules || []).forEach(m=>{
+
     let map = new Map();
 
-    (d.rows[m.id] || [])
-      .filter(r =>
-        r.show !== 'N' &&
-        CONFIG.STATUSES.includes(r.status)
-      )
-      .sort((a, b) => Number(a.seq) - Number(b.seq))
-      .forEach(r => {
+    (d.rows?.[m.id] || [])
 
-        if (!map.has(r.screen)) {
-          map.set(r.screen, {
-            id: r.screen,
-            mod: m,
-            head: r,
-            activityId: r.contentId || '',
-            items: []
+      .filter(r=>{
+
+        const visibility = String(r.show ?? 'Y')
+          .trim()
+          .toUpperCase();
+
+        const status = String(r.status || '')
+          .trim()
+          .toLowerCase();
+
+        const allowedStatuses = CONFIG.STATUSES.map(x=>
+          x.toLowerCase()
+        );
+
+        return (
+          visibility !== 'N' &&
+          allowedStatuses.includes(status) &&
+          String(r.screen || '').trim() !== ''
+        );
+
+      })
+
+      .sort((a,b)=>Number(a.seq)-Number(b.seq))
+
+      .forEach(r=>{
+
+        const screenId = String(r.screen || '').trim();
+
+        const row = {
+          ...r,
+          screen:screenId,
+          type:String(r.type || '').trim().toLowerCase(),
+          status:String(r.status || '').trim()
+        };
+
+        if(!map.has(screenId)){
+
+          map.set(screenId,{
+            id:screenId,
+            mod:m,
+            head:row,
+            activityId:row.contentId || '',
+            items:[]
           });
-        } else {
-          map.get(r.screen).items.push(r);
+
+        }else{
+
+          map.get(screenId).items.push(row);
+
         }
 
       });
 
     out.push(...map.values());
+
   });
 
   return out;
 }
 
-function renderTabs(s) {
-  let items = s.items;
+/* TABS */
+
+function renderTabs(s){
+
+  const items = s.items || [];
+
   const imageUrl = getAssetUrl('TEXTILE_CHAIN');
 
   const image = imageUrl
-    ? `<img src="${safe(imageUrl)}" alt="Textile production and garment-making context" loading="lazy">`
+    ? `<img
+         src="${safe(imageUrl)}"
+         alt="Textile production and garment-making context"
+         loading="lazy"
+       >`
     : '';
 
-  return `<div class="media" style="aspect-ratio:21/7">${image}</div>
-    <div class="tabrow" role="tablist">
-      ${items.map((it,i)=>`<button class="tabbtn" role="tab" aria-selected="${i===0}" data-tab="${i}">${safe(it.head)}</button>`).join('')}
+  return `
+    <div class="media" style="aspect-ratio:21/7">
+      ${image}
     </div>
-    <div class="tabpanel" id="panel-${s.id}"></div>`;
-}function renderCards(s){return `<div class="cards">${s.items.map((it,i)=>`<button class="flip" aria-expanded="false" data-flip="${i}"><span class="frontlabel">MYTH / ASSUMPTION</span><strong>${safe(it.head.replace(/^Myth:\s*/i,''))}</strong><span class="hint">Select to reveal the reality ↗</span><span hidden class="answer"><span class="backlabel">A MORE USEFUL VIEW</span><strong>${safe(it.text.replace(/^Reality:\s*/i,''))}</strong></span></button>`).join('')}</div>`}
-function renderChoice(s){let graded=s.head.type==='quiz_single';return `<div class="choices">${s.items.filter(x=>x.opt).map((it,i)=>`<button class="option" data-choice="${i}" data-ok="${it.ok==='Y'}" data-feedback="${safe(it.fb)}"><span class="letter">${'ABCD'[i]}</span><span>${safe(it.opt)}</span></button>`).join('')}</div><div class="feedback" role="status"></div>`}
-function renderLesson(s,n){let h=s.head,content='';
-if(h.type==='tabs')content=renderTabs(s);
-else if(h.type==='flipcards')content=renderCards(s);
-else if(h.type==='quiz_single'||h.type==='scenario_branch')content=renderChoice(s);
-else if(h.type==='reflection')content=`
-  <textarea
-    class="reflection"
-    placeholder="Write a repeated task or costly problem from your business…"
-    aria-label="Your reflection"
-  ></textarea>
 
-  <button
-    type="button"
-    class="tabbtn"
-    data-save-response
-    style="margin-top:12px;background:var(--navy);color:white"
-  >
-    Save my response
-  </button>
+    <div class="tabrow" role="tablist">
+      ${items.map((it,i)=>`
+        <button
+          class="tabbtn"
+          type="button"
+          role="tab"
+          aria-selected="${i===0}"
+          data-tab="${i}"
+        >
+          ${safe(it.head)}
+        </button>
+      `).join('')}
+    </div>
 
-  <div class="saved" data-save-status aria-live="polite">
-    Your note is saved on this device. Select Save my response
-    to submit it to the course learning record.
-  </div>
-`;else if(h.type==='video'){let url=h.media;content=`<div class="bodycopy">${paragraphs(h.text)}</div><div class="media">${url&&/\.(mp4|webm)(\?|$)/i.test(url)?`<video controls src="${safe(url)}"></video>`:`<div class="placeholder"><div><div class="play">▶</div><b>${url?`<a href="${safe(url)}" target="_blank" rel="noopener" style="color:white">Open video</a>`:'Video placeholder'}</b><div style="font-size:12px;opacity:.85;margin-top:6px">Add a hosted MP4/WebM link in the Media URL field</div></div></div>`}</div>`}
-else content=`<div class="bodycopy">${paragraphs(h.text)}</div>`;
-let status=h.status&&h.status!=='Approved'?`<span class="status">${safe(h.status)} content</span>`:'';
-return `<article class="lesson" id="${safe(s.id)}"><div class="lessonhead"><span class="num">${String(n).padStart(2,'0')}</span><div style="flex:1"><p class="sectiontag">${safe(h.section||s.mod.title)}</p><h3>${safe(h.head||s.mod.title)}</h3></div>${status}</div>${content}</article>`}
+    <div
+      class="tabpanel"
+      id="panel-${safe(s.id)}"
+    ></div>
+  `;
+}
+
+/* FLIPCARDS */
+
+function renderCards(s){
+
+  const items = s.items || [];
+
+  if(!items.length){
+    return `<p class="bodycopy">No cards are available for this activity yet.</p>`;
+  }
+
+  return `
+    <div class="cards">
+
+      ${items.map((it,i)=>`
+
+        <button
+          type="button"
+          class="flip"
+          aria-expanded="false"
+          data-flip="${i}"
+        >
+
+          <span class="frontlabel">MYTH / ASSUMPTION</span>
+
+          <strong>
+            ${safe(String(it.head || '').replace(/^Myth:\s*/i,''))}
+          </strong>
+
+          <span class="hint">
+            Select to reveal the reality ↗
+          </span>
+
+          <span hidden class="answer">
+            <span class="backlabel">A MORE USEFUL VIEW</span>
+            <strong>
+              ${safe(String(it.text || '').replace(/^Reality:\s*/i,''))}
+            </strong>
+          </span>
+
+        </button>
+
+      `).join('')}
+
+    </div>
+  `;
+}
+
+/* CHOICES */
+
+function renderChoice(s){
+
+  const graded = s.head.type === 'quiz_single';
+
+  return `
+    <div class="choices">
+
+      ${s.items
+        .filter(x=>x.opt)
+        .map((it,i)=>`
+
+          <button
+            type="button"
+            class="option"
+            data-choice="${i}"
+            data-ok="${it.ok === 'Y'}"
+            data-feedback="${safe(it.fb)}"
+          >
+
+            <span class="letter">${'ABCD'[i] || (i+1)}</span>
+
+            <span>${safe(it.opt)}</span>
+
+          </button>
+
+        `).join('')}
+
+    </div>
+
+    <div class="feedback" role="status"></div>
+  `;
+}
+
+/* LESSON RENDERING */
+
+function renderLesson(s,n){
+
+  const h = s.head;
+  let content = '';
+
+  if(h.type === 'tabs'){
+
+    content = renderTabs(s);
+
+  }else if(h.type === 'flipcards'){
+
+    content = renderCards(s);
+
+  }else if(
+    h.type === 'quiz_single' ||
+    h.type === 'scenario_branch'
+  ){
+
+    content = renderChoice(s);
+
+  }else if(h.type === 'reflection'){
+
+    content = `
+
+      <textarea
+        class="reflection"
+        placeholder="Write a repeated task or costly problem from your business…"
+        aria-label="Your reflection"
+      ></textarea>
+
+      <button
+        type="button"
+        class="tabbtn"
+        data-save-response
+        style="margin-top:12px;background:var(--navy);color:white"
+      >
+        Save my response
+      </button>
+
+      <div
+        class="saved"
+        data-save-status
+        aria-live="polite"
+      >
+        Your note is saved on this device. Select Save my response
+        to submit it to the course learning record.
+      </div>
+
+    `;
+
+  }else if(h.type === 'video'){
+
+    const url = String(h.media || '').trim();
+
+    const isDirectVideo = /\.(mp4|webm)(\?|$)/i.test(url);
+
+    content = `
+
+      <div class="bodycopy">
+        ${paragraphs(h.text)}
+      </div>
+
+      <div class="media">
+
+        ${
+          isDirectVideo
+
+          ? `
+            <video
+              controls
+              playsinline
+              preload="metadata"
+              src="${safe(url)}"
+            ></video>
+          `
+
+          : `
+            <div class="placeholder">
+
+              <div>
+                <div class="play">▶</div>
+
+                <b>
+                  ${
+                    url
+                    ? `<a href="${safe(url)}" target="_blank" rel="noopener" style="color:white">Open video</a>`
+                    : 'Video placeholder'
+                  }
+                </b>
+
+                <div style="font-size:12px;opacity:.85;margin-top:6px">
+                  Add a hosted MP4/WebM link in the Media URL field
+                </div>
+
+              </div>
+
+            </div>
+          `
+        }
+
+      </div>
+
+    `;
+
+  }else{
+
+    content = `<div class="bodycopy">${paragraphs(h.text)}</div>`;
+
+  }
+
+  const status = h.status && h.status.toLowerCase() !== 'approved'
+    ? `<span class="status">${safe(h.status)} content</span>`
+    : '';
+
+  return `
+
+    <article class="lesson" id="${safe(s.id)}">
+
+      <div class="lessonhead">
+
+        <span class="num">${String(n).padStart(2,'0')}</span>
+
+        <div style="flex:1">
+
+          <p class="sectiontag">
+            ${safe(h.section || s.mod.title)}
+          </p>
+
+          <h3>${safe(h.head || s.mod.title)}</h3>
+
+        </div>
+
+        ${status}
+
+      </div>
+
+      ${content}
+
+    </article>
+
+  `;
+}
+
+/* MAIN COURSE RENDERING */
 
 function render(d){
-courseAssets = d.assets || {};
-  $('courseTitle').textContent=d.title.toUpperCase();
 
-  let screens=groupScreens(d);
-  let main=$('main');
-const bannerUrl = getAssetUrl('COURSE_BANNER');
+  courseAssets = d.assets || {};
 
-if (bannerUrl) {
-  main.style.setProperty(
-    '--course-banner-image',
-    `url("${bannerUrl.replace(/["\\\n\r]/g, '')}")`
-  );
-}
+  $('courseTitle').textContent =
+    String(d.title || 'Practical AI for Textile SMEs').toUpperCase();
+
+  const screens = groupScreens(d);
+  const main = $('main');
+
+  const bannerUrl = getAssetUrl('COURSE_BANNER');
+
+  if(bannerUrl){
+
+    main.style.setProperty(
+      '--course-banner-image',
+      `url("${bannerUrl.replace(/["\\\n\r]/g,'')}")`
+    );
+
+  }else{
+
+    main.style.removeProperty('--course-banner-image');
+
+  }
+
   const placeholderUrl = getAssetUrl('MEDIA_PLACEHOLDER');
 
-if (placeholderUrl) {
-  main.style.setProperty(
-    '--media-placeholder-image',
-    `url("${placeholderUrl.replace(/["\\\n\r]/g, '')}")`
-  );
-}
-  main.innerHTML=`
+  if(placeholderUrl){
+
+    main.style.setProperty(
+      '--media-placeholder-image',
+      `url("${placeholderUrl.replace(/["\\\n\r]/g,'')}")`
+    );
+
+  }else{
+
+    main.style.removeProperty('--media-placeholder-image');
+
+  }
+
+  main.innerHTML = `
+
     <section class="intro">
+
       <div class="introinner">
-        <p class="eyebrow">A practical learning journey for business owners</p>
+
+        <p class="eyebrow">
+          A practical learning journey for business owners
+        </p>
+
         <h1>${safe(d.title)}</h1>
-        <p>Explore where AI may help, how to evaluate a solution and how to think about value before investing. The textile sector is our starting point, with lessons that can be adapted to other industries.</p>
+
+        <p>
+          Explore where AI may help, how to evaluate a solution
+          and how to think about value before investing.
+          The textile sector is our starting point, with lessons
+          that can be adapted to other industries.
+        </p>
+
         <div class="intrometa">
           <span class="pill">Approx. 60 minutes</span>
           <span class="pill">Self-paced</span>
           <span class="pill">Textile SME focus</span>
         </div>
+
         <div class="objectives">
-          <div class="objective">Identify business problems where AI may help</div>
-          <div class="objective">Evaluate tools and vendor claims</div>
-          <div class="objective">Consider costs, benefits and a small pilot</div>
+
+          <div class="objective">
+            Identify business problems where AI may help
+          </div>
+
+          <div class="objective">
+            Evaluate tools and vendor claims
+          </div>
+
+          <div class="objective">
+            Consider costs, benefits and a small pilot
+          </div>
+
         </div>
+
       </div>
+
     </section>
+
   `;
 
-  main.insertAdjacentHTML('beforeend', renderLearnerPanel());
+  main.insertAdjacentHTML('beforeend',renderLearnerPanel());
 
-  let nav='';
-  let global=0;
+  let nav = '';
+  let global = 0;
 
-  d.modules.forEach((m,mi)=>{
+  (d.modules || []).forEach((m,mi)=>{
 
-    let ss=screens.filter(s=>s.mod.id===m.id);
+    const ss = screens.filter(s=>s.mod.id === m.id);
 
     if(!ss.length)return;
 
-    nav+=`<a href="#module-${m.id}">${safe(m.id.replace('M0','Module '))} · ${safe(m.title)}</a>`;
+    nav += `
+      <a href="#module-${safe(m.id)}">
+        ${safe(m.id.replace('M0','Module '))} · ${safe(m.title)}
+      </a>
+    `;
 
-    let body=ss.map(s=>renderLesson(s,++global)).join('');
+    const body = ss
+      .map(s=>renderLesson(s,++global))
+      .join('');
 
     main.insertAdjacentHTML('beforeend',`
+
       <section class="module" id="module-${safe(m.id)}">
+
         <div class="modulehead">
+
           <div>
-            <p class="eyebrow" style="color:var(--rust)">MODULE ${mi+1}</p>
+
+            <p class="eyebrow" style="color:var(--rust)">
+              MODULE ${mi+1}
+            </p>
+
             <h2>${safe(m.title)}</h2>
-            <p>Work through the examples and activities at your own pace.</p>
+
+            <p>
+              Work through the examples and activities at your own pace.
+            </p>
+
           </div>
-          <span class="duration">≈ ${safe(m.min||'—')} min</span>
+
+          <span class="duration">
+            ≈ ${safe(m.min || '—')} min
+          </span>
+
         </div>
+
         ${body}
+
       </section>
+
     `);
+
   });
 
   main.insertAdjacentHTML('beforeend',`
+
     <section class="endnote">
+
       <h2>Pause and apply</h2>
-      <p>Before moving on, identify one process in your business that is repetitive, time-consuming or prone to error. Keep that example in mind as you evaluate possible AI solutions.</p>
+
+      <p>
+        Before moving on, identify one process in your business
+        that is repetitive, time-consuming or prone to error.
+        Keep that example in mind as you evaluate possible AI solutions.
+      </p>
+
     </section>
+
   `);
 
-  // Restore previously saved responses from Google Sheets.
+  /* Restore previously saved responses */
+
   learnerResponses.forEach(item=>{
 
     if(!item.screenId)return;
 
-    const lesson=document.getElementById(item.screenId);
+    const lesson = document.getElementById(item.screenId);
 
     if(!lesson)return;
 
-    const textarea=lesson.querySelector('textarea');
+    const textarea = lesson.querySelector('textarea');
 
     if(!textarea)return;
 
-    const existing=textarea.value.trim();
-
-    const currentVersion=Number(
-      textarea.dataset.restoredVersion||0
+    const currentVersion = Number(
+      textarea.dataset.restoredVersion || 0
     );
 
-    const savedVersion=Number(item.responseVersion||0);
+    const savedVersion = Number(item.responseVersion || 0);
 
-    if(savedVersion>currentVersion){
+    if(savedVersion > currentVersion){
 
-      textarea.value=item.learnerResponse||'';
+      textarea.value = item.learnerResponse || '';
 
-      textarea.dataset.restoredVersion=savedVersion;
+      textarea.dataset.restoredVersion = savedVersion;
 
     }
+
   });
 
-  $('nav').innerHTML=nav;
+  $('nav').innerHTML = nav;
 
   wire(main);
 
   updateProgress();
 
-  window.addEventListener('scroll',updateProgress,{passive:true});
+  if(!window.progressListenerAdded){
+
+    window.addEventListener('scroll',updateProgress,{passive:true});
+
+    window.progressListenerAdded = true;
+
+  }
 
 }
 
-async function submitLearnerResponse(lesson, textarea, status) {
+/* SAVE LEARNER RESPONSE */
 
-  if (!learnerRegistered || !learnerProfile.learnerId) {
-    status.textContent = 'Please register before saving your response.';
+async function submitLearnerResponse(lesson,textarea,status){
+
+  if(!learnerRegistered || !learnerProfile.learnerId){
+
+    status.textContent =
+      'Please register before saving your response.';
+
     return;
+
   }
 
   const learnerResponse = textarea.value.trim();
 
-  if (!learnerResponse) {
-    status.textContent = 'Please enter your response before saving.';
+  if(!learnerResponse){
+
+    status.textContent =
+      'Please enter your response before saving.';
+
     return;
+
   }
 
-  if (!CONFIG.APPS_SCRIPT_URL ||
-      CONFIG.APPS_SCRIPT_URL === 'PASTE_YOUR_WEB_APP_URL_HERE') {
-    status.textContent = 'The Google Sheet connection has not been configured yet.';
+  if(!CONFIG.APPS_SCRIPT_URL){
+
+    status.textContent =
+      'The Google Sheet connection has not been configured yet.';
+
     return;
+
   }
 
-const lessonData = grouped.find(x => x.id === lesson.id);
+  const lessonData = grouped.find(x=>x.id === lesson.id);
 
-const allLessonItems = [
-  lessonData?.head,
-  ...(lessonData?.items || [])
-];
+  const allLessonItems = [
+    lessonData?.head,
+    ...(lessonData?.items || [])
+  ];
 
-const activityId =
-  allLessonItems.find(item =>
-    item?.type === 'reflection' && item?.contentId
-  )?.contentId || lesson.id;
+  const activityId =
+    allLessonItems.find(item=>
+      item?.type === 'reflection' && item?.contentId
+    )?.contentId || lesson.id;
 
   const payload = {
-    learnerId: learnerProfile.learnerId,
-    learnerName: learnerProfile.learnerName,
-    courseId: CONFIG.COURSE_ID,
-    moduleId: lesson.id.substring(0, 3),
-    screenId: lesson.id,
-    activityId: activityId,
-    learnerResponse: learnerResponse
+    learnerId:learnerProfile.learnerId,
+    learnerName:learnerProfile.learnerName,
+    courseId:CONFIG.COURSE_ID,
+    moduleId:lesson.id.substring(0,3),
+    screenId:lesson.id,
+    activityId:activityId,
+    learnerResponse:learnerResponse
   };
 
   const button = lesson.querySelector('[data-save-response]');
 
-  if (button) button.disabled = true;
+  if(button)button.disabled = true;
 
   status.textContent = 'Saving your response…';
 
-  try {
+  try{
 
-    const result = await fetch(CONFIG.APPS_SCRIPT_URL, {
-      method: 'POST',
-      redirect: 'follow',
-      headers: {
-        'Content-Type': 'text/plain;charset=utf-8'
+    const result = await fetch(CONFIG.APPS_SCRIPT_URL,{
+      method:'POST',
+      redirect:'follow',
+      headers:{
+        'Content-Type':'text/plain;charset=utf-8'
       },
-      body: JSON.stringify(payload)
+      body:JSON.stringify(payload)
     });
 
     const data = await result.json();
 
-    if (!data.success) {
-      throw new Error(data.message || 'The response could not be saved.');
+    if(!data.success){
+
+      throw new Error(
+        data.message || 'The response could not be saved.'
+      );
+
     }
 
-    // Keep the latest saved record in local storage.
     const previousKey =
-      'textile-ai:record:' + learnerProfile.learnerId + ':' + lesson.id;
+      'textile-ai:record:' +
+      learnerProfile.learnerId +
+      ':' +
+      lesson.id;
 
-    localStorage.setItem(previousKey, JSON.stringify({
-      recordId: data.recordId,
-      version: data.responseVersion
+    localStorage.setItem(previousKey,JSON.stringify({
+      recordId:data.recordId,
+      version:data.responseVersion
     }));
 
-    // Update the in-memory history.
-    learnerResponses = learnerResponses.filter(item =>
-      !(item.screenId === lesson.id &&
-        Number(item.responseVersion) === Number(data.responseVersion))
+    learnerResponses = learnerResponses.filter(item=>
+      !(
+        item.screenId === lesson.id &&
+        Number(item.responseVersion) === Number(data.responseVersion)
+      )
     );
 
     learnerResponses.push({
-      recordId: data.recordId,
-      moduleId: lesson.id.substring(0, 3),
-      screenId: lesson.id,
-      activityId: activityId,
-      responseVersion: data.responseVersion,
-      responseType: data.responseType,
-      learnerResponse: learnerResponse,
-      linkedPreviousRecordId: data.linkedPreviousRecordId || ''
+      recordId:data.recordId,
+      moduleId:lesson.id.substring(0,3),
+      screenId:lesson.id,
+      activityId:activityId,
+      responseVersion:data.responseVersion,
+      responseType:data.responseType,
+      learnerResponse:learnerResponse,
+      linkedPreviousRecordId:data.linkedPreviousRecordId || ''
     });
 
     status.textContent =
       'Your response has been saved as Version ' +
-      data.responseVersion + ' (' + data.responseType + ').';
+      data.responseVersion +
+      ' (' +
+      data.responseType +
+      ').';
 
-  } catch (error) {
+  }catch(error){
 
     console.error(error);
 
     status.textContent =
-      'We could not send your response to the learning record. Your note is still saved on this device. Please try again.';
+      'We could not send your response to the learning record. ' +
+      'Your note is still saved on this device. Please try again.';
 
-  } finally {
+  }finally{
 
-    if (button) button.disabled = false;
+    if(button)button.disabled = false;
 
   }
+
 }
 
-async function registerLearner() {
+/* LEARNER REGISTRATION */
+
+async function registerLearner(){
 
   const nameInput = document.getElementById('learnerName');
   const organisationInput = document.getElementById('learnerOrganisation');
@@ -468,230 +1536,378 @@ async function registerLearner() {
   const learnerName = nameInput.value.trim();
   const organisation = organisationInput.value.trim();
 
-  if (!learnerName || !organisation) {
-    status.textContent = 'Please enter both your name and business / organisation.';
+  if(!learnerName || !organisation){
+
+    status.textContent =
+      'Please enter both your name and business / organisation.';
+
     return;
+
   }
 
   button.disabled = true;
   button.textContent = 'Please wait...';
+
   status.textContent = 'Connecting to your learning record...';
 
-  try {
+  try{
 
-    const response = await fetch(CONFIG.APPS_SCRIPT_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'text/plain;charset=utf-8'
+    const response = await fetch(CONFIG.APPS_SCRIPT_URL,{
+      method:'POST',
+      headers:{
+        'Content-Type':'text/plain;charset=utf-8'
       },
-      body: JSON.stringify({
-        action: 'registerLearner',
-        learnerName: learnerName,
-        organisation: organisation
+      body:JSON.stringify({
+        action:'registerLearner',
+        learnerName:learnerName,
+        organisation:organisation
       })
     });
 
     const result = await response.json();
 
-    if (!result.success) {
-      throw new Error(result.message || 'Registration could not be completed.');
+    if(!result.success){
+
+      throw new Error(
+        result.message || 'Registration could not be completed.'
+      );
+
     }
 
     learnerProfile = {
-      learnerId: result.learner.learnerId,
-      learnerName: result.learner.learnerName,
-      organisation: result.learner.organisation
+      learnerId:result.learner.learnerId,
+      learnerName:result.learner.learnerName,
+      organisation:result.learner.organisation
     };
 
-    const historyResponse = await fetch(CONFIG.APPS_SCRIPT_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'text/plain;charset=utf-8'
+    const historyResponse = await fetch(CONFIG.APPS_SCRIPT_URL,{
+      method:'POST',
+      headers:{
+        'Content-Type':'text/plain;charset=utf-8'
       },
-      body: JSON.stringify({
-        action: 'getLearnerHistory',
-        learnerId: learnerProfile.learnerId
+      body:JSON.stringify({
+        action:'getLearnerHistory',
+        learnerId:learnerProfile.learnerId
       })
     });
 
     const historyResult = await historyResponse.json();
 
-    if (!historyResult.success) {
-      throw new Error(historyResult.message || 'Could not retrieve your previous work.');
+    if(!historyResult.success){
+
+      throw new Error(
+        historyResult.message ||
+        'Could not retrieve your previous work.'
+      );
+
     }
 
     learnerResponses = historyResult.responses || [];
 
-// Restore the learner's latest saved responses into the reflection boxes.
-document.querySelectorAll('.lesson').forEach(lesson => {
+    /* Restore latest saved responses */
 
-  const textarea = lesson.querySelector('textarea');
+    document.querySelectorAll('.lesson').forEach(lesson=>{
 
-  if (!textarea) return;
+      const textarea = lesson.querySelector('textarea');
 
-  const savedResponses = learnerResponses
-    .filter(item => item.screenId === lesson.id)
-    .sort((a, b) =>
-      Number(b.responseVersion) - Number(a.responseVersion)
-    );
+      if(!textarea)return;
 
-  if (savedResponses.length) {
-    textarea.value = savedResponses[0].learnerResponse || '';
-  }
+      const savedResponses = learnerResponses
+        .filter(item=>item.screenId === lesson.id)
+        .sort((a,b)=>
+          Number(b.responseVersion)-Number(a.responseVersion)
+        );
 
-});
+      if(savedResponses.length){
+
+        textarea.value =
+          savedResponses[0].learnerResponse || '';
+
+      }
+
+    });
+
     learnerRegistered = true;
 
-    status.textContent = 'Welcome! Your learning record is ready.';
+    status.textContent =
+      'Welcome! Your learning record is ready.';
 
     button.textContent = 'Registered';
 
-    console.log('Learner registered:', learnerProfile);
-    console.log('Previous responses:', learnerResponses);
+    console.log('Learner registered:',learnerProfile);
+    console.log('Previous responses:',learnerResponses);
 
-  } catch (error) {
+  }catch(error){
 
-    status.textContent = 'Unable to complete registration: ' + error.message;
+    status.textContent =
+      'Unable to complete registration: ' + error.message;
 
     button.disabled = false;
     button.textContent = 'Continue';
 
     console.error(error);
+
   }
+
 }
 
+/* INTERACTION WIRING */
 
 function wire(root){
 
-  // Learner registration button
-  const registerButton = root.querySelector('#registerLearnerBtn');
+  /* Registration */
+
+  const registerButton =
+    root.querySelector('#registerLearnerBtn');
 
   if(registerButton){
-    registerButton.addEventListener('click', registerLearner);
+
+    registerButton.addEventListener('click',registerLearner);
+
   }
 
-  // Tabs
+  /* Tabs */
+
   root.querySelectorAll('.tabrow').forEach(bar=>{
-    let s=bar.closest('.lesson'),
-        buttons=[...bar.querySelectorAll('button')],
-        items=grouped.find(x=>x.id===s.id)?.items||[];
+
+    const lesson = bar.closest('.lesson');
+
+    const buttons = [
+      ...bar.querySelectorAll('button')
+    ];
+
+    const items =
+      grouped.find(x=>x.id === lesson.id)?.items || [];
 
     function pick(i){
-      buttons.forEach((b,j)=>b.setAttribute('aria-selected',j===i));
 
-      let it=items[i],
-          lines=String(it.text||'').split('\n'),
-          a=lines.find(x=>/^Common headache:/i.test(x))?.replace(/^Common headache:\s*/i,''),
-          b=lines.find(x=>/^Possible AI starting point:/i.test(x))?.replace(/^Possible AI starting point:\s*/i,'');
+      if(!items[i])return;
 
-      s.querySelector('.tabpanel').innerHTML=
-        `<div class="insight"><b>Business challenge</b><p>${safe(a||it.text)}</p></div>
-         <div class="insight ai"><b>Where AI may help</b><p>${safe(b||'')}</p></div>`;
+      buttons.forEach((button,j)=>
+        button.setAttribute('aria-selected',j === i)
+      );
+
+      const item = items[i];
+
+      const lines = String(item.text || '').split('\n');
+
+      const challenge = lines
+        .find(x=>/^Common headache:/i.test(x))
+        ?.replace(/^Common headache:\s*/i,'');
+
+      const aiStartingPoint = lines
+        .find(x=>/^Possible AI starting point:/i.test(x))
+        ?.replace(/^Possible AI starting point:\s*/i,'');
+
+      lesson.querySelector('.tabpanel').innerHTML = `
+
+        <div class="insight">
+
+          <b>Business challenge</b>
+
+          <p>${safe(challenge || item.text || '')}</p>
+
+        </div>
+
+        <div class="insight ai">
+
+          <b>Where AI may help</b>
+
+          <p>${safe(aiStartingPoint || '')}</p>
+
+        </div>
+
+      `;
+
     }
 
-    buttons.forEach((b,i)=>b.addEventListener('click',()=>pick(i)));
+    buttons.forEach((button,i)=>
+      button.addEventListener('click',()=>pick(i))
+    );
 
     if(items.length)pick(0);
+
   });
 
-  // Flipcards
-  root.querySelectorAll('[data-flip]').forEach(b=>{
-    let front=b.querySelector('strong').textContent;
+  /* Flipcards */
 
-    b.addEventListener('click',()=>{
-      let opened=b.classList.toggle('open');
+  root.querySelectorAll('[data-flip]').forEach(button=>{
 
-      b.setAttribute('aria-expanded',opened);
-      b.querySelector('.frontlabel').textContent=opened?'REALITY':'MYTH / ASSUMPTION';
-      b.querySelector('.hint').hidden=opened;
-      b.querySelector('.answer').hidden=!opened;
+    const frontText =
+      button.querySelector(':scope > strong')?.textContent || '';
 
-      b.querySelector('strong').textContent=
-        opened?b.querySelector('.answer strong').textContent:front;
+    button.addEventListener('click',()=>{
+
+      const opened = button.classList.toggle('open');
+
+      button.setAttribute('aria-expanded',String(opened));
+
+      button.querySelector('.frontlabel').textContent =
+        opened ? 'REALITY' : 'MYTH / ASSUMPTION';
+
+      button.querySelector('.hint').hidden = opened;
+
+      button.querySelector('.answer').hidden = !opened;
+
+      const frontStrong =
+        button.querySelector(':scope > strong');
+
+      const answerStrong =
+        button.querySelector('.answer strong');
+
+      if(frontStrong && answerStrong){
+
+        frontStrong.textContent =
+          opened ? answerStrong.textContent : frontText;
+
+      }
+
     });
+
   });
 
-  // Reflection saving and quiz interactions
+  /* Reflection saving and quiz interactions */
+
   root.querySelectorAll('.lesson').forEach(lesson=>{
 
-    let textarea=lesson.querySelector('textarea');
+    const textarea = lesson.querySelector('textarea');
 
     if(textarea){
 
-try{
+      textarea.addEventListener('input',()=>{
 
-  textarea.addEventListener('input',()=>{
+        if(!learnerRegistered || !learnerProfile.learnerId)return;
 
-    if(!learnerRegistered || !learnerProfile.learnerId) return;
+        const key =
+          'textile-ai:' +
+          learnerProfile.learnerId +
+          ':' +
+          lesson.id;
 
-    const key='textile-ai:'+learnerProfile.learnerId+':'+lesson.id;
+        localStorage.setItem(key,textarea.value);
 
-    localStorage.setItem(key,textarea.value);
+      });
 
-  });
+      const saveButton =
+        lesson.querySelector('[data-save-response]');
 
-}catch(e){}
-
-      const saveButton=lesson.querySelector('[data-save-response]');
-      const status=lesson.querySelector('[data-save-status]');
+      const status =
+        lesson.querySelector('[data-save-status]');
 
       if(saveButton){
+
         saveButton.addEventListener('click',()=>{
-          submitLearnerResponse(lesson,textarea,status);
+
+          submitLearnerResponse(
+            lesson,
+            textarea,
+            status
+          );
+
         });
+
       }
+
     }
 
-    // Quiz choices
-    let opts=[...lesson.querySelectorAll('[data-choice]')];
+    /* Quiz choices */
 
-    opts.forEach(btn=>btn.addEventListener('click',()=>{
+    const opts = [
+      ...lesson.querySelectorAll('[data-choice]')
+    ];
 
-      if(opts.some(x=>x.disabled))return;
+    opts.forEach(button=>{
 
-      let good=btn.dataset.ok==='true',
-          feedback=lesson.querySelector('.feedback');
+      button.addEventListener('click',()=>{
 
-      btn.classList.add(good?'correct':'incorrect');
-      opts.forEach(x=>x.disabled=true);
+        if(opts.some(x=>x.disabled))return;
 
-      feedback.textContent=
-        (good?'That is the strongest option. ':'Consider the trade-off. ')+
-        btn.dataset.feedback;
+        const good = button.dataset.ok === 'true';
 
-      feedback.classList.add('show');
-    }));
+        const feedback =
+          lesson.querySelector('.feedback');
+
+        button.classList.add(
+          good ? 'correct' : 'incorrect'
+        );
+
+        opts.forEach(x=>x.disabled = true);
+
+        feedback.textContent =
+          (good
+            ? 'That is the strongest option. '
+            : 'Consider the trade-off. '
+          ) +
+          button.dataset.feedback;
+
+        feedback.classList.add('show');
+
+      });
+
+    });
 
   });
 
 }
 
-
-let grouped=[];
+/* PROGRESS INDICATOR */
 
 function updateProgress(){
-  let max=document.documentElement.scrollHeight-innerHeight;
-  let pct=max>0?Math.min(100,scrollY/max*100):0;
-  $('progress').style.width=pct+'%';
-  let anchors=[...document.querySelectorAll('.module')],active=anchors[0];
-  anchors.forEach(a=>{
-    if(a.getBoundingClientRect().top<180)active=a
+
+  const max =
+    document.documentElement.scrollHeight - innerHeight;
+
+  const pct =
+    max > 0
+      ? Math.min(100,scrollY/max*100)
+      : 0;
+
+  $('progress').style.width = pct + '%';
+
+  const anchors = [
+    ...document.querySelectorAll('.module')
+  ];
+
+  let active = anchors[0];
+
+  anchors.forEach(anchor=>{
+
+    if(anchor.getBoundingClientRect().top < 180){
+
+      active = anchor;
+
+    }
+
   });
-  document.querySelectorAll('.nav a').forEach(a=>
-    a.classList.toggle('active',active&&a.hash==='#'+active.id)
-  );
+
+  document.querySelectorAll('.nav a').forEach(link=>{
+
+    link.classList.toggle(
+      'active',
+      Boolean(active) && link.hash === '#' + active.id
+    );
+
+  });
+
 }
+
+/* LOAD COURSE CONTENT FROM GOOGLE SHEETS */
 
 async function loadSheet(){
 
   if(!CONFIG.APPS_SCRIPT_URL){
-    console.warn('Apps Script URL is missing. Using embedded content.');
+
+    console.warn(
+      'Apps Script URL is missing. Using embedded content.'
+    );
+
     return DATA;
+
   }
 
   try{
 
-    const response=await fetch(CONFIG.APPS_SCRIPT_URL,{
+    const response = await fetch(CONFIG.APPS_SCRIPT_URL,{
       method:'POST',
       redirect:'follow',
       headers:{
@@ -702,19 +1918,46 @@ async function loadSheet(){
       })
     });
 
-    const result=await response.json();
+    const result = await response.json();
 
     if(!result.success){
+
       throw new Error(
-        result.message||'Could not retrieve course content.'
+        result.message || 'Could not retrieve course content.'
       );
+
     }
 
-    if(!result.course||!result.course.modules||!result.course.rows){
-      throw new Error('The course content returned an unexpected format.');
+    if(
+      !result.course ||
+      !result.course.modules ||
+      !result.course.rows
+    ){
+
+      throw new Error(
+        'The course content returned an unexpected format.'
+      );
+
     }
 
     console.log('Course content loaded from Google Sheets.');
+
+    console.log(
+      'Assets received:',
+      result.course.assets
+    );
+
+    console.log(
+      'Module 1 rows:',
+      result.course.rows.M01
+    );
+
+    console.log(
+      'Flipcard rows:',
+      (result.course.rows.M01 || []).filter(r=>
+        String(r.screen || '').trim() === 'M01-S04'
+      )
+    );
 
     return result.course;
 
@@ -726,15 +1969,29 @@ async function loadSheet(){
     );
 
     return DATA;
+
   }
+
 }
 
+/* START COURSE */
+
 (async()=>{
-  let d=await loadSheet();
-  grouped=groupScreens(d);
+
+  const d = await loadSheet();
+
+  grouped = groupScreens(d);
+
+  console.log(
+    'Grouped flipcard screen:',
+    grouped.find(s=>s.id === 'M01-S04')
+  );
+
   render(d);
+
 })();
 
-</script></body></html>
+</script>
 
-
+</body>
+</html>
