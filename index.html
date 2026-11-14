@@ -214,7 +214,14 @@ courseAssets = d.assets || {};
 
   let screens=groupScreens(d);
   let main=$('main');
+const bannerUrl = getAssetUrl('COURSE_BANNER');
 
+if (bannerUrl) {
+  main.style.setProperty(
+    '--course-banner-image',
+    `url("${bannerUrl.replace(/["\\\n\r]/g, '')}")`
+  );
+}
   main.innerHTML=`
     <section class="intro">
       <div class="introinner">
