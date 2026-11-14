@@ -1721,18 +1721,17 @@ async function submitLearnerResponse(lesson,textarea,status){
         status.textContent =
           'Your response has been saved and your AI feedback is ready.';
 
-      }catch(feedbackError){
+}catch(feedbackError){
 
-        console.error('AI feedback error:',feedbackError);
+  console.error('AI feedback error:',feedbackError);
 
-        feedbackBox.textContent =
-          'Your response has been saved successfully, but AI feedback is temporarily unavailable. You can continue with the course.';
+  feedbackBox.textContent =
+    'AI feedback error: ' + feedbackError.message;
 
-        status.textContent =
-          'Your response has been saved. AI feedback is temporarily unavailable.';
+  status.textContent =
+    'Your response has been saved. Please check the AI feedback message below.';
 
-      }
-    }
+}
 
   }catch(error){
 
