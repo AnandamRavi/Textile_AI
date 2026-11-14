@@ -969,56 +969,66 @@ function groupScreens(d){
 /* TABS */
 
 
+
 function renderTabs(s){
 
   const items = s.items || [];
-console.log('TEXTILE TAB ITEMS:', items);
+
+  const firstImage = getAssetUrl(items[0]?.asset);
+
+  const banner = firstImage
+    ? `<img
+         src="${safe(firstImage)}"
+         alt="${safe(items[0]?.head || 'Textile production')}"
+         loading="lazy"
+       >`
+    : `<div class="image-missing">Image not available</div>`;
+
   return `
-    <div class="textile-flow">
-      ${items.map((it,i)=>{
+    <div class="textile-tabs">
 
-        const imageUrl = getAssetUrl(it.asset);
+      <div class="media textile-banner" style="aspect-ratio:21/7">
+        ${banner}
+      </div>
 
-        const image = imageUrl
-          ? `<img
-               src="${safe(imageUrl)}"
-               alt="${safe(it.head)}"
-               loading="lazy"
-             >`
-          : `<div class="image-missing">
-               Image not available
-             </div>`;
+      <div class="tabrow" role="tablist">
 
-        return `
-          <div class="flow-stage">
-            ${image}
-            <div class="flow-stage-title">
-              ${safe(it.head)}
-            </div>
-          </div>
-        `;
+        ${items.map((it,i)=>`
 
-      }).join('')}
+          <button
+            class="tabbtn"
+            type="button"
+            role="tab"
+            aria-selected="${i===0}"
+            data-tab="${i}"
+            data-image="${safe(getAssetUrl(it.asset))}"
+            onclick="
+              const container = this.closest('.textile-tabs');
+              const img = container.querySelector('.textile-banner img');
+
+              if(img && this.dataset.image){
+                img.src = this.dataset.image;
+                img.alt = this.textContent.trim();
+              }
+
+              container.querySelectorAll('.tabbtn').forEach(btn=>{
+                btn.setAttribute('aria-selected', btn === this);
+              });
+            "
+          >
+            ${safe(it.head)}
+          </button>
+
+        `).join('')}
+
+      </div>
+
+      <div
+        class="tabpanel"
+        id="panel-${safe(s.id)}"
+      ></div>
+
     </div>
-
-    <div class="tabrow" role="tablist">
-      ${items.map((it,i)=>`
-        <button
-          class="tabbtn"
-          type="button"
-          role="tab"
-          aria-selected="${i===0}"
-          data-tab="${i}"
-        >
-          ${safe(it.head)}
-        </button>
-      `).join('')}
-    </div>
-
-    <div
-      class="tabpanel"
-      id="panel-${safe(s.id)}"
-    ></div>
   `;
 }
 
