@@ -1136,13 +1136,17 @@ function renderLesson(s,n){
 
     content = renderChoice(s);
 
-  }else if(h.type === 'reflection'){
+ }else if(h.type === 'reflection'){
 
     content = `
 
+      <div class="bodycopy">
+        ${paragraphs(h.text)}
+      </div>
+
       <textarea
         class="reflection"
-        placeholder="Write a repeated task or costly problem from your business…"
+        placeholder="Write your response here…"
         aria-label="Your reflection"
       ></textarea>
 
@@ -1165,7 +1169,6 @@ function renderLesson(s,n){
       </div>
 
     `;
-
   }else if(h.type === 'video'){
 
     const url = String(h.media || '').trim();
