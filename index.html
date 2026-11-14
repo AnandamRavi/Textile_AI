@@ -1469,14 +1469,24 @@ function render(d){
 
 async function submitLearnerResponse(lesson,textarea,status){
 
-  if(!learnerRegistered || !learnerProfile.learnerId){
+if(!learnerRegistered || !learnerProfile.learnerId){
 
-    status.textContent =
-      'Please register before saving your response.';
+  status.textContent =
+    'Before submitting your reflection, please register with your name and organisation. Registration allows us to save your work and provide personalised AI feedback.';
 
-    return;
+  const registrationPanel =
+    document.querySelector('#registrationPanel');
 
+  if(registrationPanel){
+    registrationPanel.scrollIntoView({
+      behavior:'smooth',
+      block:'center'
+    });
   }
+
+  return;
+
+}
 
   const learnerResponse = textarea.value.trim();
 
