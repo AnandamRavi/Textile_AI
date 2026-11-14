@@ -186,8 +186,20 @@ function groupScreens(d) {
   return out;
 }
 
-function renderTabs(s){let items=s.items;return `<div class="media" style="aspect-ratio:21/7"><img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1200&q=80" alt="Textile production and garment-making context" loading="lazy"></div><div class="tabrow" role="tablist">${items.map((it,i)=>`<button class="tabbtn" role="tab" aria-selected="${i===0}" data-tab="${i}">${safe(it.head)}</button>`).join('')}</div><div class="tabpanel" id="panel-${s.id}"></div>`}
-function renderCards(s){return `<div class="cards">${s.items.map((it,i)=>`<button class="flip" aria-expanded="false" data-flip="${i}"><span class="frontlabel">MYTH / ASSUMPTION</span><strong>${safe(it.head.replace(/^Myth:\s*/i,''))}</strong><span class="hint">Select to reveal the reality ↗</span><span hidden class="answer"><span class="backlabel">A MORE USEFUL VIEW</span><strong>${safe(it.text.replace(/^Reality:\s*/i,''))}</strong></span></button>`).join('')}</div>`}
+function renderTabs(s) {
+  let items = s.items;
+  const imageUrl = getAssetUrl('TEXTILE_CHAIN');
+
+  const image = imageUrl
+    ? `<img src="${safe(imageUrl)}" alt="Textile production and garment-making context" loading="lazy">`
+    : '';
+
+  return `<div class="media" style="aspect-ratio:21/7">${image}</div>
+    <div class="tabrow" role="tablist">
+      ${items.map((it,i)=>`<button class="tabbtn" role="tab" aria-selected="${i===0}" data-tab="${i}">${safe(it.head)}</button>`).join('')}
+    </div>
+    <div class="tabpanel" id="panel-${s.id}"></div>`;
+}function renderCards(s){return `<div class="cards">${s.items.map((it,i)=>`<button class="flip" aria-expanded="false" data-flip="${i}"><span class="frontlabel">MYTH / ASSUMPTION</span><strong>${safe(it.head.replace(/^Myth:\s*/i,''))}</strong><span class="hint">Select to reveal the reality ↗</span><span hidden class="answer"><span class="backlabel">A MORE USEFUL VIEW</span><strong>${safe(it.text.replace(/^Reality:\s*/i,''))}</strong></span></button>`).join('')}</div>`}
 function renderChoice(s){let graded=s.head.type==='quiz_single';return `<div class="choices">${s.items.filter(x=>x.opt).map((it,i)=>`<button class="option" data-choice="${i}" data-ok="${it.ok==='Y'}" data-feedback="${safe(it.fb)}"><span class="letter">${'ABCD'[i]}</span><span>${safe(it.opt)}</span></button>`).join('')}</div><div class="feedback" role="status"></div>`}
 function renderLesson(s,n){let h=s.head,content='';
 if(h.type==='tabs')content=renderTabs(s);
