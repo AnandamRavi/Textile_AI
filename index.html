@@ -232,6 +232,14 @@ if (bannerUrl) {
     `url("${bannerUrl.replace(/["\\\n\r]/g, '')}")`
   );
 }
+  const placeholderUrl = getAssetUrl('MEDIA_PLACEHOLDER');
+
+if (placeholderUrl) {
+  main.style.setProperty(
+    '--media-placeholder-image',
+    `url("${placeholderUrl.replace(/["\\\n\r]/g, '')}")`
+  );
+}
   main.innerHTML=`
     <section class="intro">
       <div class="introinner">
