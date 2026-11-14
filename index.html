@@ -1146,11 +1146,16 @@ function renderCards(s){
 
 /* CHOICES */
 
+
 function renderChoice(s){
 
   const graded = s.head.type === 'quiz_single';
 
   return `
+    <div class="bodycopy" style="margin-bottom:18px">
+      ${paragraphs(s.head.text)}
+    </div>
+
     <div class="choices">
 
       ${s.items
