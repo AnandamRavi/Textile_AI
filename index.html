@@ -933,23 +933,37 @@ function groupScreens(d){
 
 /* TABS */
 
+
 function renderTabs(s){
 
   const items = s.items || [];
 
-  const imageUrl = getAssetUrl('TEXTILE_CHAIN');
-
-  const image = imageUrl
-    ? `<img
-         src="${safe(imageUrl)}"
-         alt="Textile production and garment-making context"
-         loading="lazy"
-       >`
-    : '';
-
   return `
-    <div class="media" style="aspect-ratio:21/7">
-      ${image}
+    <div class="textile-flow">
+      ${items.map((it,i)=>{
+
+        const imageUrl = getAssetUrl(it.asset);
+
+        const image = imageUrl
+          ? `<img
+               src="${safe(imageUrl)}"
+               alt="${safe(it.head)}"
+               loading="lazy"
+             >`
+          : `<div class="image-missing">
+               Image not available
+             </div>`;
+
+        return `
+          <div class="flow-stage">
+            ${image}
+            <div class="flow-stage-title">
+              ${safe(it.head)}
+            </div>
+          </div>
+        `;
+
+      }).join('')}
     </div>
 
     <div class="tabrow" role="tablist">
