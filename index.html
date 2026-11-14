@@ -1541,45 +1541,39 @@ function render(d){
 
 /* SAVE LEARNER RESPONSE */
 
+
 async function submitLearnerResponse(lesson,textarea,status){
 
-if(!learnerRegistered || !learnerProfile.learnerId){
+  if(!learnerRegistered || !learnerProfile.learnerId){
 
-  status.textContent =
-    'Before submitting your reflection, please register with your name and organisation. Registration allows us to save your work and provide personalised AI feedback.';
+    status.textContent =
+      'Before submitting your reflection, please register with your name and organisation. Registration allows us to save your work and provide personalised AI feedback.';
 
-const registrationPanel =
-  document.getElementById('learner-registration');
+    const registrationPanel =
+      document.getElementById('learner-registration');
 
-if(registrationPanel){
-  registrationPanel.scrollIntoView({
-    behavior:'smooth',
-    block:'center'
-  });
-}
+    if(registrationPanel){
+      registrationPanel.scrollIntoView({
+        behavior:'smooth',
+        block:'center'
+      });
+    }
 
-  return;
-
-}
+    return;
+  }
 
   const learnerResponse = textarea.value.trim();
 
   if(!learnerResponse){
-
     status.textContent =
       'Please enter your response before saving.';
-
     return;
-
   }
 
   if(!CONFIG.APPS_SCRIPT_URL){
-
     status.textContent =
       'The Google Sheet connection has not been configured yet.';
-
     return;
-
   }
 
   const lessonData = grouped.find(x=>x.id === lesson.id);
@@ -1606,11 +1600,21 @@ if(registrationPanel){
 
   const button = lesson.querySelector('[data-save-response]');
 
+  const feedbackBox =
+    lesson.querySelector('[data-ai-feedback]');
+
   if(button)button.disabled = true;
 
   status.textContent = 'Saving your response…';
 
+  if(feedbackBox){
+    feedbackBox.style.display = 'none';
+    feedbackBox.textContent = '';
+  }
+
   try{
+
+    // STEP 1: Save the learner response
 
     const result = await fetch(CONFIG.APPS_SCRIPT_URL,{
       method:'POST',
@@ -1624,12 +1628,12 @@ if(registrationPanel){
     const data = await result.json();
 
     if(!data.success){
-
       throw new Error(
         data.message || 'The response could not be saved.'
       );
-
     }
+
+    // STEP 2: Update the local learning record
 
     const previousKey =
       'textile-ai:record:' +
@@ -1665,7 +1669,70 @@ if(registrationPanel){
       data.responseVersion +
       ' (' +
       data.responseType +
-      ').';
+      '). Generating your AI feedback…';
+
+    // STEP 3: Request AI feedback from Groq
+
+    if(feedbackBox){
+
+      feedbackBox.style.display = 'block';
+      feedbackBox.textContent = 'Generating your personalised feedback…';
+
+      try{
+
+        const feedbackPayload = {
+          ...payload,
+          action:'getAIFeedback'
+        };
+
+        const feedbackResult = await fetch(CONFIG.APPS_SCRIPT_URL,{
+          method:'POST',
+          redirect:'follow',
+          headers:{
+            'Content-Type':'text/plain;charset=utf-8'
+          },
+          body:JSON.stringify(feedbackPayload)
+        });
+
+        const feedbackData = await feedbackResult.json();
+
+        if(!feedbackData.success){
+          throw new Error(
+            feedbackData.message || 'AI feedback could not be generated.'
+          );
+        }
+
+        // Display feedback safely as text
+
+        feedbackBox.textContent = '';
+
+        const heading = document.createElement('strong');
+        heading.textContent = 'Your AI learning feedback';
+
+        const message = document.createElement('p');
+        message.textContent = feedbackData.feedback;
+
+        message.style.marginTop = '10px';
+        message.style.lineHeight = '1.6';
+
+        feedbackBox.appendChild(heading);
+        feedbackBox.appendChild(message);
+
+        status.textContent =
+          'Your response has been saved and your AI feedback is ready.';
+
+      }catch(feedbackError){
+
+        console.error('AI feedback error:',feedbackError);
+
+        feedbackBox.textContent =
+          'Your response has been saved successfully, but AI feedback is temporarily unavailable. You can continue with the course.';
+
+        status.textContent =
+          'Your response has been saved. AI feedback is temporarily unavailable.';
+
+      }
+    }
 
   }catch(error){
 
