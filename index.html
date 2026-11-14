@@ -1671,6 +1671,7 @@ async function submitLearnerResponse(lesson,textarea,status){
       data.responseType +
       '). Generating your AI feedback…';
 
+   
     // STEP 3: Request AI feedback from Groq
 
     if(feedbackBox){
@@ -1702,8 +1703,6 @@ async function submitLearnerResponse(lesson,textarea,status){
           );
         }
 
-        // Display feedback safely as text
-
         feedbackBox.textContent = '';
 
         const heading = document.createElement('strong');
@@ -1721,17 +1720,19 @@ async function submitLearnerResponse(lesson,textarea,status){
         status.textContent =
           'Your response has been saved and your AI feedback is ready.';
 
-}catch(feedbackError){
+      }catch(feedbackError){
 
-  console.error('AI feedback error:',feedbackError);
+        console.error('AI feedback error:',feedbackError);
 
-  feedbackBox.textContent =
-    'AI feedback error: ' + feedbackError.message;
+        feedbackBox.textContent =
+          'AI feedback error: ' + feedbackError.message;
 
-  status.textContent =
-    'Your response has been saved. Please check the AI feedback message below.';
+        status.textContent =
+          'Your response has been saved. Please check the AI feedback message below.';
 
-}
+      }
+
+    }
 
   }catch(error){
 
