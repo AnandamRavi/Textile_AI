@@ -1875,82 +1875,66 @@ async function registerLearner(){
 
 /* INTERACTION WIRING */
 
+
 function wire(root){
 
   /* Registration */
-
-  const registerButton =
-    root.querySelector('#registerLearnerBtn');
+  const registerButton = root.querySelector('#registerLearnerBtn');
 
   if(registerButton){
-
     registerButton.addEventListener('click',registerLearner);
-
   }
 
   /* Tabs */
-
   root.querySelectorAll('.tabrow').forEach(bar=>{
 
     const lesson = bar.closest('.lesson');
+    if(!lesson)return;
 
-    const buttons = [
-      ...bar.querySelectorAll('button')
-    ];
-
-    const items =
-      grouped.find(x=>x.id === lesson.id)?.items || [];
+    const buttons = [...bar.querySelectorAll('button')];
+    const items = grouped.find(x=>x.id === lesson.id)?.items || [];
 
     function pick(i){
 
       if(!items[i])return;
 
       buttons.forEach((button,j)=>
-        button.setAttribute('aria-selected',j === i)
+        button.setAttribute('aria-selected',String(j===i))
       );
 
-const item = items[i];
+      const item = items[i];
+      const text = String(item.text || '');
 
-const text = String(item.text || '');
+      const challengeMatch = text.match(
+        /(?:Business Challenge|Common headache)\s*:\s*([\s\S]*?)(?=(?:Where AI May Help|Possible AI starting point)\s*:|$)/i
+      );
 
-const challengeMatch = text.match(
-  /(?:Business Challenge|Common headache)\s*:\s*([\s\S]*?)(?=(?:Where AI May Help|Possible AI starting point)\s*:|$)/i
-);
+      const aiMatch = text.match(
+        /(?:Where AI May Help|Possible AI starting point)\s*:\s*([\s\S]*)/i
+      );
 
-const aiMatch = text.match(
-  /(?:Where AI May Help|Possible AI starting point)\s*:\s*([\s\S]*)/i
-);
+      const challenge = challengeMatch
+        ? challengeMatch[1].trim()
+        : '';
 
-const challenge = challengeMatch
-  ? challengeMatch[1].trim()
-  : '';
+      const aiStartingPoint = aiMatch
+        ? aiMatch[1].trim()
+        : '';
 
-const aiStartingPoint = aiMatch
-  ? aiMatch[1].trim()
-  : '';
-        .find(x=>/^(Possible AI starting point|Where AI May Help):/i.test(x))
-        ?.replace(/^(Possible AI starting point|Where AI May Help):\s*/i,'');
+      const panel = lesson.querySelector('.tabpanel');
+      if(!panel)return;
 
-      lesson.querySelector('.tabpanel').innerHTML = `
-
+      panel.innerHTML = `
         <div class="insight">
-
           <b>Business challenge</b>
-
-          <p>${safe(challenge || item.text || '')}</p>
-
+          <p>${safe(challenge || 'No business challenge has been entered for this stage.')}</p>
         </div>
 
         <div class="insight ai">
-
           <b>Where AI may help</b>
-
-          <p>${safe(aiStartingPoint || '')}</p>
-
+          <p>${safe(aiStartingPoint || 'No AI starting point has been entered for this stage.')}</p>
         </div>
-
       `;
-
     }
 
     buttons.forEach((button,i)=>
@@ -1958,48 +1942,9 @@ const aiStartingPoint = aiMatch
     );
 
     if(items.length)pick(0);
-
-  });
-
-  /* Flipcards */
-
-  root.querySelectorAll('[data-flip]').forEach(button=>{
-
-    const frontText =
-      button.querySelector(':scope > strong')?.textContent || '';
-
-    button.addEventListener('click',()=>{
-
-      const opened = button.classList.toggle('open');
-
-      button.setAttribute('aria-expanded',String(opened));
-
-      button.querySelector('.frontlabel').textContent =
-        opened ? 'REALITY' : 'MYTH / ASSUMPTION';
-
-      button.querySelector('.hint').hidden = opened;
-
-      button.querySelector('.answer').hidden = !opened;
-
-      const frontStrong =
-        button.querySelector(':scope > strong');
-
-      const answerStrong =
-        button.querySelector('.answer strong');
-
-      if(frontStrong && answerStrong){
-
-        frontStrong.textContent =
-          opened ? answerStrong.textContent : frontText;
-
-      }
-
-    });
-
   });
 
   /* Reflection saving and quiz interactions */
-
   root.querySelectorAll('.lesson').forEach(lesson=>{
 
     const textarea = lesson.querySelector('textarea');
@@ -2017,36 +1962,19 @@ const aiStartingPoint = aiMatch
           lesson.id;
 
         localStorage.setItem(key,textarea.value);
-
       });
 
-      const saveButton =
-        lesson.querySelector('[data-save-response]');
-
-      const status =
-        lesson.querySelector('[data-save-status]');
+      const saveButton = lesson.querySelector('[data-save-response]');
+      const status = lesson.querySelector('[data-save-status]');
 
       if(saveButton){
-
         saveButton.addEventListener('click',()=>{
-
-          submitLearnerResponse(
-            lesson,
-            textarea,
-            status
-          );
-
+          submitLearnerResponse(lesson,textarea,status);
         });
-
       }
-
     }
 
-    /* Quiz choices */
-
-    const opts = [
-      ...lesson.querySelectorAll('[data-choice]')
-    ];
+    const opts = [...lesson.querySelectorAll('[data-choice]')];
 
     opts.forEach(button=>{
 
@@ -2055,31 +1983,20 @@ const aiStartingPoint = aiMatch
         if(opts.some(x=>x.disabled))return;
 
         const good = button.dataset.ok === 'true';
+        const feedback = lesson.querySelector('.feedback');
 
-        const feedback =
-          lesson.querySelector('.feedback');
+        button.classList.add(good ? 'correct' : 'incorrect');
 
-        button.classList.add(
-          good ? 'correct' : 'incorrect'
-        );
-
-        opts.forEach(x=>x.disabled = true);
+        opts.forEach(x=>x.disabled=true);
 
         feedback.textContent =
-          (good
-            ? 'That is the strongest option. '
-            : 'Consider the trade-off. '
-          ) +
+          (good ? 'That is the strongest option. ' : 'Consider the trade-off. ') +
           button.dataset.feedback;
 
         feedback.classList.add('show');
-
       });
-
     });
-
   });
-
 }
 
 /* PROGRESS INDICATOR */
