@@ -1474,11 +1474,11 @@ if(!learnerRegistered || !learnerProfile.learnerId){
   status.textContent =
     'Before submitting your reflection, please register with your name and organisation. Registration allows us to save your work and provide personalised AI feedback.';
 
-const registrationStatus =
-  document.getElementById('learnerProfileStatus');
+const registrationPanel =
+  document.getElementById('learner-registration');
 
-if(registrationStatus){
-  registrationStatus.scrollIntoView({
+if(registrationPanel){
+  registrationPanel.scrollIntoView({
     behavior:'smooth',
     block:'center'
   });
