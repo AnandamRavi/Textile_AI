@@ -60,7 +60,19 @@ let learnerProfile = {
   learnerName: '',
   organisation: ''
 };
+let courseAssets = {};
 
+function getAssetUrl(assetId) {
+  const asset = courseAssets[assetId];
+
+  if (!asset || String(asset.status).toLowerCase() !== 'approved') {
+    return '';
+  }
+
+  const url = String(asset.url || '').trim();
+
+  return /^https?:\/\//i.test(url) ? url : '';
+}
 let learnerResponses = [];
 let learnerRegistered = false;
 
