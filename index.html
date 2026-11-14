@@ -1917,9 +1917,9 @@ function wire(root){
         .find(x=>/^Common headache:/i.test(x))
         ?.replace(/^Common headache:\s*/i,'');
 
-      const aiStartingPoint = lines
-        .find(x=>/^Possible AI starting point:/i.test(x))
-        ?.replace(/^Possible AI starting point:\s*/i,'');
+const aiStartingPoint = lines
+        .find(x=>/^(Possible AI starting point|Where AI May Help):/i.test(x))
+        ?.replace(/^(Possible AI starting point|Where AI May Help):\s*/i,'');
 
       lesson.querySelector('.tabpanel').innerHTML = `
 
