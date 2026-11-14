@@ -650,6 +650,41 @@ footer{
   html{scroll-behavior:auto}
   *{transition:none!important}
 }
+.textile-flow {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.flow-stage img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 12px;
+  display: block;
+}
+
+.flow-stage-title {
+  font-weight: 600;
+  font-size: 13px;
+  margin-top: 8px;
+}
+
+.image-missing {
+  aspect-ratio: 4 / 3;
+  background: #e6efeb;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  font-size: 12px;
+}
+
+@media (max-width: 700px) {
+  .textile-flow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
 </style>
 </head>
 
