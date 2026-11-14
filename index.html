@@ -1034,6 +1034,7 @@ function renderTabs(s){
 
 /* FLIPCARDS */
 
+
 function renderCards(s){
 
   const items = s.items || [];
@@ -1051,24 +1052,47 @@ function renderCards(s){
           type="button"
           class="flip"
           aria-expanded="false"
+          aria-label="Reveal reality for ${safe(it.head || 'this card')}"
           data-flip="${i}"
+          onclick="
+            this.classList.toggle('is-flipped');
+            this.setAttribute(
+              'aria-expanded',
+              this.classList.contains('is-flipped')
+            );
+          "
         >
 
-          <span class="frontlabel">MYTH / ASSUMPTION</span>
+          <span class="flipinner">
 
-          <strong>
-            ${safe(String(it.head || '').replace(/^Myth:\s*/i,''))}
-          </strong>
+            <span class="flipfront">
 
-          <span class="hint">
-            Select to reveal the reality ↗
-          </span>
+              <span class="frontlabel">MYTH / ASSUMPTION</span>
 
-          <span hidden class="answer">
-            <span class="backlabel">A MORE USEFUL VIEW</span>
-            <strong>
-              ${safe(String(it.text || '').replace(/^Reality:\s*/i,''))}
-            </strong>
+              <strong>
+                ${safe(String(it.head || '').replace(/^Myth:\s*/i,''))}
+              </strong>
+
+              <span class="hint">
+                Select to reveal the reality ↗
+              </span>
+
+            </span>
+
+            <span class="flipback">
+
+              <span class="backlabel">A MORE USEFUL VIEW</span>
+
+              <strong>
+                ${safe(String(it.text || '').replace(/^Reality:\s*/i,''))}
+              </strong>
+
+              <span class="hint">
+                Select to return ↶
+              </span>
+
+            </span>
+
           </span>
 
         </button>
@@ -1078,6 +1102,8 @@ function renderCards(s){
     </div>
   `;
 }
+
+/* CHOICES */
 
 /* CHOICES */
 
