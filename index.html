@@ -203,7 +203,7 @@ let status=h.status&&h.status!=='Approved'?`<span class="status">${safe(h.status
 return `<article class="lesson" id="${safe(s.id)}"><div class="lessonhead"><span class="num">${String(n).padStart(2,'0')}</span><div style="flex:1"><p class="sectiontag">${safe(h.section||s.mod.title)}</p><h3>${safe(h.head||s.mod.title)}</h3></div>${status}</div>${content}</article>`}
 
 function render(d){
-
+courseAssets = d.assets || {};
   $('courseTitle').textContent=d.title.toUpperCase();
 
   let screens=groupScreens(d);
