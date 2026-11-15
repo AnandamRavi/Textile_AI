@@ -1962,14 +1962,16 @@ function wire(root){
 
       const details = [author, year].filter(Boolean).join(' · ');
 
+
       return `
-        <div class="insight">
-          <b>${safe(label)}</b>
+        <div class="practice-card">
+          <span class="source-label">${safe(label)}</span>
           <p><strong>${titleHTML}</strong></p>
           ${details ? `<p>${safe(details)}</p>` : ''}
           ${note ? `<p>${safe(note)}</p>` : ''}
         </div>
       `;
+
     }
 
     function pick(i){
