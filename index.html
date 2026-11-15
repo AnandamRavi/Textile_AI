@@ -1885,6 +1885,7 @@ function wire(root){
     registerButton.addEventListener('click',registerLearner);
   }
 
+
   /* Tabs */
   root.querySelectorAll('.tabrow').forEach(bar=>{
 
@@ -1893,6 +1894,36 @@ function wire(root){
 
     const buttons = [...bar.querySelectorAll('button')];
     const items = grouped.find(x=>x.id === lesson.id)?.items || [];
+
+    function makeSourceCard(label, source){
+
+      if(!source)return '';
+
+      const title = String(source.title || '').trim();
+      const url = String(source.url || '').trim();
+      const note = String(source.note || '').trim();
+      const author = String(source.author || '').trim();
+      const year = String(source.year || '').trim();
+
+      if(!title && !note && !url)return '';
+
+      const validUrl = /^https?:\/\//i.test(url);
+
+      const titleHTML = validUrl
+        ? `<a href="${safe(url)}" target="_blank" rel="noopener noreferrer">${safe(title || 'Read the study')}</a>`
+        : safe(title || 'Study / case study');
+
+      const details = [author, year].filter(Boolean).join(' · ');
+
+      return `
+        <div class="insight">
+          <b>${safe(label)}</b>
+          <p><strong>${titleHTML}</strong></p>
+          ${details ? `<p>${safe(details)}</p>` : ''}
+          ${note ? `<p>${safe(note)}</p>` : ''}
+        </div>
+      `;
+    }
 
     function pick(i){
 
@@ -1924,6 +1955,18 @@ function wire(root){
       const panel = lesson.querySelector('.tabpanel');
       if(!panel)return;
 
+      const indianCard = makeSourceCard(
+        'Indian example',
+        item.indianSource
+      );
+
+      const internationalCard = makeSourceCard(
+        'International example',
+        item.internationalSource
+      );
+
+      const sourceCards = indianCard + internationalCard;
+
       panel.innerHTML = `
         <div class="insight">
           <b>Business challenge</b>
@@ -1934,6 +1977,14 @@ function wire(root){
           <b>Where AI may help</b>
           <p>${safe(aiStartingPoint || 'No AI starting point has been entered for this stage.')}</p>
         </div>
+
+        <div class="insight" style="grid-column:1 / -1">
+          <b>See it in practice</b>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px">
+            ${sourceCards || '<p>No supporting studies have been added for this stage yet.</p>'}
+          </div>
+        </div>
       `;
     }
 
@@ -1943,6 +1994,7 @@ function wire(root){
 
     if(items.length)pick(0);
   });
+
 
   /* Reflection saving and quiz interactions */
   root.querySelectorAll('.lesson').forEach(lesson=>{
