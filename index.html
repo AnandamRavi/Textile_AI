@@ -445,6 +445,53 @@ h1{
   background:#eff5f2
 }
 
+/* See it in practice */
+.insight.practice{
+  grid-column:1 / -1;
+  background:#faf7f2;
+  border-top:3px solid var(--rust);
+}
+
+.practice-sources{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:14px;
+  margin-top:14px;
+}
+
+.practice-card{
+  padding:16px;
+  border:1px solid #e5ded3;
+  border-radius:12px;
+  background:#fff;
+}
+
+.practice-card .source-label{
+  display:inline-block;
+  margin-bottom:9px;
+  font-size:12px;
+  font-weight:700;
+  color:var(--teal);
+  text-transform:uppercase;
+  letter-spacing:.04em;
+}
+
+.practice-card p{
+  margin:7px 0;
+  font-size:14px;
+  line-height:1.55;
+}
+
+.practice-card a{
+  color:var(--rust);
+  font-weight:700;
+  text-decoration:underline;
+}
+
+.practice-card a:hover{
+  text-decoration:none;
+}
+
 .insight b{
   display:block;
   color:var(--navy);
