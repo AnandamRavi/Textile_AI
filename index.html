@@ -1457,8 +1457,8 @@ function render(d){
     <p>${safe(d.purpose || '')}</p>
 
     <div class="intrometa">
-      <span class="pill">Approx. 60 minutes</span>
-      <span class="pill">Self-paced</span>
+<span class="pill">${safe(d.durationDisplay || '')}</span>
+<span class="pill">${safe(d.modality || '')}</span>
       <span class="pill">${safe(d.audience || '')}</span>
     </div>
 
