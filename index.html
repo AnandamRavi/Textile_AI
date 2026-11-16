@@ -1296,59 +1296,72 @@ function renderLesson(s,n){
 >
 </div>
     `;
-  }else if(h.type === 'video'){
+ 
+}else if(h.type === 'video'){
 
-    const url = String(h.media || '').trim();
+  const url = String(h.media || '').trim();
 
-    const isDirectVideo = /\.(mp4|webm)(\?|$)/i.test(url);
+  const isDirectVideo = /\.(mp4|webm)(\?|$)/i.test(url);
 
-    content = `
+  const isSynthesia = /^https:\/\/share\.synthesia\.io\/embeds\/videos\/[a-zA-Z0-9-]+\/?$/i.test(url);
 
-      <div class="bodycopy">
-        ${paragraphs(h.text)}
-      </div>
+  content = `
 
-      <div class="media">
+    <div class="bodycopy">
+      ${paragraphs(h.text)}
+    </div>
 
-        ${
-          isDirectVideo
+    <div class="media">
 
-          ? `
-            <video
-              controls
-              playsinline
-              preload="metadata"
+      ${
+        isDirectVideo
+
+        ? `
+          <video
+            controls
+            playsinline
+            preload="metadata"
+            src="${safe(url)}"
+          ></video>
+        `
+
+        : isSynthesia
+
+        ? `
+          <div style="position:relative;width:100%;aspect-ratio:16/9">
+            <iframe
               src="${safe(url)}"
-            ></video>
-          `
+              title="${safe(h.head || 'Course video')}"
+              allowfullscreen
+              allow="encrypted-media; fullscreen;"
+              loading="lazy"
+              style="position:absolute;inset:0;width:100%;height:100%;border:0"
+            ></iframe>
+          </div>
+        `
 
-          : `
-            <div class="placeholder">
-
-              <div>
-                <div class="play">▶</div>
-
-                <b>
-                  ${
-                    url
-                    ? `<a href="${safe(url)}" target="_blank" rel="noopener" style="color:white">Open video</a>`
-                    : 'Video placeholder'
-                  }
-                </b>
-
-                <div style="font-size:12px;opacity:.85;margin-top:6px">
-                  Add a hosted MP4/WebM link in the Media URL field
-                </div>
-
+        : `
+          <div class="placeholder">
+            <div>
+              <div class="play">▶</div>
+              <b>
+                ${
+                  url
+                  ? `<a href="${safe(url)}" target="_blank" rel="noopener noreferrer" style="color:white">Open video</a>`
+                  : 'Video placeholder'
+                }
+              </b>
+              <div style="font-size:12px;opacity:.85;margin-top:6px">
+                Add an MP4, WebM or supported video embed URL in the Media URL field
               </div>
-
             </div>
-          `
-        }
+          </div>
+        `
+      }
 
-      </div>
+    </div>
 
-    `;
+  `;
 
   }else{
 
