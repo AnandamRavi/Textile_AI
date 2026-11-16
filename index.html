@@ -1446,48 +1446,34 @@ function render(d){
 
   main.innerHTML = `
 
-    <section class="intro">
+<section class="intro">
 
-      <div class="introinner">
+  <div class="introinner">
 
-        <p class="eyebrow">
-          A practical learning journey for business owners
-        </p>
+    <p class="eyebrow">${safe(d.tagline || '')}</p>
 
-        <h1>${safe(d.title)}</h1>
+    <h1>${safe(d.title || '')}</h1>
 
-        <p>
-          Explore where AI may help, how to evaluate a solution
-          and how to think about value before investing.
-          The textile sector is our starting point, with lessons
-          that can be adapted to other industries.
-        </p>
+    <p>${safe(d.purpose || '')}</p>
 
-        <div class="intrometa">
-          <span class="pill">Approx. 60 minutes</span>
-          <span class="pill">Self-paced</span>
-          <span class="pill">Textile SME focus</span>
-        </div>
+    <div class="intrometa">
+      <span class="pill">Approx. 60 minutes</span>
+      <span class="pill">Self-paced</span>
+      <span class="pill">${safe(d.audience || '')}</span>
+    </div>
 
-        <div class="objectives">
+    <div class="objectives">
+      ${String(d.objectives || '')
+        .split(/\r?\n/)
+        .map(item => item.trim())
+        .filter(Boolean)
+        .map(item => `<div class="objective">${safe(item)}</div>`)
+        .join('')}
+    </div>
 
-          <div class="objective">
-            Identify business problems where AI may help
-          </div>
+  </div>
 
-          <div class="objective">
-            Evaluate tools and vendor claims
-          </div>
-
-          <div class="objective">
-            Consider costs, benefits and a small pilot
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
+</section>
 
   `;
 
