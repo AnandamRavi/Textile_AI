@@ -2113,17 +2113,19 @@ opts.forEach(button => {
         x.classList.remove('correct', 'incorrect');
       });
 
-      feedback.textContent = '';
+         feedback.textContent = '';
       feedback.classList.remove('show');
 
     });
 
   });
 
-});
-  }); // Close the lesson loop
+}); // End opts.forEach
 
-} // Close wire(root)
+}); // End root.querySelectorAll('.lesson').forEach
+
+} // End wire(root)
+
 /* PROGRESS INDICATOR */
 
 function updateProgress(){
