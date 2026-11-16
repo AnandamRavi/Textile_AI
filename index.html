@@ -1299,7 +1299,7 @@ function renderLesson(s,n){
  
 }else if(h.type === 'video'){
 
-  const url = String(h.media || '').trim();
+const url = String(h.media || getAssetUrl(h.asset) || '').trim();
 
   const isDirectVideo = /\.(mp4|webm)(\?|$)/i.test(url);
 
