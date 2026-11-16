@@ -2098,25 +2098,32 @@ opts.forEach(button => {
 
     feedback.textContent = button.dataset.feedback;
 
-    const retry = document.createElement('button');
-    retry.type = 'button';
-    retry.textContent = 'Close feedback and try again';
-    retry.className = 'feedback-retry';
 
-    feedback.appendChild(retry);
-    feedback.classList.add('show');
+feedback.classList.add('show');
 
-    retry.addEventListener('click', () => {
+if (!good) {
 
-      opts.forEach(x => {
-        x.disabled = false;
-        x.classList.remove('correct', 'incorrect');
-      });
+  const retry = document.createElement('button');
+  retry.type = 'button';
+  retry.textContent = '↻ Try again';
+  retry.className = 'feedback-retry';
 
-         feedback.textContent = '';
-      feedback.classList.remove('show');
+  feedback.appendChild(retry);
 
+  retry.addEventListener('click', () => {
+
+    opts.forEach(x => {
+      x.disabled = false;
+      x.classList.remove('correct', 'incorrect');
     });
+
+    feedback.textContent = '';
+    feedback.classList.remove('show');
+
+  });
+
+}
+
 
   });
 
