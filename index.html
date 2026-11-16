@@ -2080,28 +2080,47 @@ function wire(root){
       }
     }
 
-    const opts = [...lesson.querySelectorAll('[data-choice]')];
+   
+const opts = [...lesson.querySelectorAll('[data-choice]')];
 
-    opts.forEach(button=>{
+opts.forEach(button => {
 
-      button.addEventListener('click',()=>{
+  button.addEventListener('click', () => {
 
-        if(opts.some(x=>x.disabled))return;
+    if (opts.some(x => x.disabled)) return;
 
-        const good = button.dataset.ok === 'true';
-        const feedback = lesson.querySelector('.feedback');
+    const good = button.dataset.ok === 'true';
+    const feedback = lesson.querySelector('.feedback');
 
-        button.classList.add(good ? 'correct' : 'incorrect');
+    button.classList.add(good ? 'correct' : 'incorrect');
 
-        opts.forEach(x=>x.disabled=true);
+    opts.forEach(x => x.disabled = true);
 
-feedback.textContent = button.dataset.feedback;
+    feedback.textContent = button.dataset.feedback;
 
-        feedback.classList.add('show');
+    const retry = document.createElement('button');
+    retry.type = 'button';
+    retry.textContent = 'Close feedback and try again';
+    retry.className = 'feedback-retry';
+
+    feedback.appendChild(retry);
+    feedback.classList.add('show');
+
+    retry.addEventListener('click', () => {
+
+      opts.forEach(x => {
+        x.disabled = false;
+        x.classList.remove('correct', 'incorrect');
       });
+
+      feedback.textContent = '';
+      feedback.classList.remove('show');
+
     });
+
   });
-}
+
+});
 
 /* PROGRESS INDICATOR */
 
